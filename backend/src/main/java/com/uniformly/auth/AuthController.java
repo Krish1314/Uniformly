@@ -7,6 +7,7 @@ import com.uniformly.users.UserResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final UserRepository users;
     private final JwtService jwtService;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public AuthController(UserRepository users, JwtService jwtService) {
         this.users = users;
@@ -26,12 +28,14 @@ public class AuthController {
         if (users.existsByEmailIgnoreCase(request.email())) {
             throw new IllegalArgumentException("Email is already registered");
         }
+        // Always hash the password before saving
+        String hashedPassword = passwordEncoder.encode(request.password());
         User user = users.save(new User(
                 request.firstName(),
                 request.lastName(),
                 request.email(),
                 request.phone(),
-                request.password()
+                hashedPassword
         ));
         String token = jwtService.generateToken(user.getId(), user.getRole());
         return new AuthResponse(token, UserResponse.from(user));
@@ -40,11 +44,24 @@ public class AuthController {
     @PostMapping("/login")
     public AuthResponse login(@Valid @RequestBody LoginRequest request) {
         User user = users.findByEmailIgnoreCase(request.email())
-                .orElseThrow(() -> new NotFoundException("Invalid email or password"));
-        // TODO SECURITY: This is temporary for testing only. Restore hashed password storage before production.
-        if (!request.password().equals(user.getPasswordHash())) {
+                .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
+
+        boolean matches;
+        String storedHash = user.getPasswordHash();
+
+        // Handle legacy plaintext passwords (e.g. seeded test data)
+        if (storedHash != null && storedHash.startsWith("$2a$")) {
+            // Properly BCrypt-hashed
+            matches = passwordEncoder.matches(request.password(), storedHash);
+        } else {
+            // Plaintext comparison for seeded/legacy accounts
+            matches = request.password().equals(storedHash);
+        }
+
+        if (!matches) {
             throw new IllegalArgumentException("Invalid email or password");
         }
+
         String token = jwtService.generateToken(user.getId(), user.getRole());
         return new AuthResponse(token, UserResponse.from(user));
     }
