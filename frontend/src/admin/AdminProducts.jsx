@@ -140,6 +140,9 @@ const ProductModal = ({ onClose, onSave }) => {
     sizes: "S, M, L, XL",
     colors: "Navy, White"
   });
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
+  const [saving, setSaving] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -149,23 +152,43 @@ const ProductModal = ({ onClose, onSave }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const payload = {
-      ...formData,
-      price: parseFloat(formData.price),
-      compareAtPrice: formData.compareAtPrice ? parseFloat(formData.compareAtPrice) : null,
-      stockQuantity: parseInt(formData.stockQuantity),
-      sizes: formData.sizes.split(",").map(s => s.trim()).filter(Boolean),
-      colors: formData.colors.split(",").map(c => c.trim()).filter(Boolean)
-    };
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    setImageFile(file || null);
+    setImagePreview(file ? URL.createObjectURL(file) : "");
+  };
 
-    adminApi.createProduct(payload)
-      .then(() => {
-        alert("Product created successfully!");
-        onSave();
-      })
-      .catch((err) => console.error("Failed to create product", err));
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+
+    try {
+      let imageUrl = formData.imageUrl;
+
+      if (imageFile) {
+        const uploadResponse = await adminApi.uploadProductImage(imageFile);
+        imageUrl = uploadResponse.data.imageUrl;
+      }
+
+      const payload = {
+        ...formData,
+        imageUrl,
+        price: parseFloat(formData.price),
+        compareAtPrice: formData.compareAtPrice ? parseFloat(formData.compareAtPrice) : null,
+        stockQuantity: parseInt(formData.stockQuantity),
+        sizes: formData.sizes.split(",").map(s => s.trim()).filter(Boolean),
+        colors: formData.colors.split(",").map(c => c.trim()).filter(Boolean)
+      };
+
+      await adminApi.createProduct(payload);
+      alert("Product created successfully!");
+      onSave();
+    } catch (err) {
+      console.error("Failed to create product", err);
+      alert(err.response?.data?.message || "Failed to create product");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -240,12 +263,21 @@ const ProductModal = ({ onClose, onSave }) => {
           </div>
 
           <div>
+            <label>Product Image</label>
+            <input
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              onChange={handleImageChange}
+            />
+          </div>
+
+          <div>
             <label>Image URL</label>
             <input 
               name="imageUrl" 
               value={formData.imageUrl} 
               onChange={handleChange} 
-              required 
+              placeholder="Auto-filled after upload, or paste URL"
             />
           </div>
 
@@ -270,6 +302,23 @@ const ProductModal = ({ onClose, onSave }) => {
           </div>
         </div>
 
+        {imagePreview && (
+          <div style={{ marginTop: "14px" }}>
+            <label>Preview</label>
+            <img
+              src={imagePreview}
+              alt="Product preview"
+              style={{
+                width: "96px",
+                height: "96px",
+                objectFit: "cover",
+                borderRadius: "6px",
+                border: "1px solid #d8dee8"
+              }}
+            />
+          </div>
+        )}
+
         <label>Description</label>
         <textarea 
           name="description" 
@@ -293,7 +342,9 @@ const ProductModal = ({ onClose, onSave }) => {
 
         <div className="modal-actions">
           <button type="button" onClick={onClose}>Cancel</button>
-          <button type="submit" className="admin-primary-btn">Save Product</button>
+          <button type="submit" className="admin-primary-btn" disabled={saving}>
+            {saving ? "Saving..." : "Save Product"}
+          </button>
         </div>
       </form>
     </div>

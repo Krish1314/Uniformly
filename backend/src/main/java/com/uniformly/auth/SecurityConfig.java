@@ -39,6 +39,8 @@ public class SecurityConfig {
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/schools")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/error")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/error/**")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/uploads/**")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/api/upload")).authenticated()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/admin/**")).hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

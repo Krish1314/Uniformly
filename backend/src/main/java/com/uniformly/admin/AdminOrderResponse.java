@@ -10,6 +10,14 @@ public record AdminOrderResponse(
         String customerName,
         String customerEmail,
         String paymentMethod,
+        String paymentStatus,
+        BigDecimal subtotal,
+        BigDecimal shippingFee,
+        BigDecimal gstAmount,
         BigDecimal totalAmount,
+        Integer itemCount,
+        String itemDetails,
+        String deliveryAddress,
+        String deliveryPhone,
         String status
 ) {}

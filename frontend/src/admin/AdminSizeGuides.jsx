@@ -1,16 +1,34 @@
 import React, { useState, useEffect } from "react";
 import AdminLayout from "./AdminLayout";
 import { categoryApi } from "../api/categoryApi";
+import { uploadApi } from "../api/uploadApi";
 
 const AdminSizeGuides = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingCategory, setEditingCategory] = useState(null);
+  const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState({
     imageUrl: "",
     notes: "",
     chartData: ""
   });
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const res = await uploadApi.uploadImage(file);
+      const imageUrl = `http://localhost:8080${res.data}`;
+      setFormData(prev => ({ ...prev, imageUrl }));
+    } catch (err) {
+      console.error("Failed to upload image", err);
+      alert("Image upload failed. Please try again.");
+    } finally {
+      setUploading(false);
+    }
+  };
 
   useEffect(() => {
     fetchCategories();
@@ -101,13 +119,42 @@ const AdminSizeGuides = () => {
             <button type="button" className="modal-close" onClick={() => setEditingCategory(null)}>×</button>
             <h2>Edit Size Guide: {editingCategory.name}</h2>
             
-            <label>Image URL</label>
-            <input 
-              value={formData.imageUrl}
-              onChange={(e) => setFormData({...formData, imageUrl: e.target.value})}
-              placeholder="https://example.com/size-guide.jpg"
-              required
-            />
+            <label>How to Measure Image</label>
+            <div className="border rounded p-3 bg-light mb-3">
+              {formData.imageUrl ? (
+                <div className="text-center mb-3">
+                  <img 
+                    src={formData.imageUrl} 
+                    alt="Size guide preview" 
+                    style={{ maxHeight: '180px', maxWidth: '100%', borderRadius: '8px', objectFit: 'contain' }} 
+                  />
+                </div>
+              ) : null}
+              <div className="d-flex align-items-center gap-3">
+                <label 
+                  className="btn btn-sm btn-outline-dark mb-0" 
+                  style={{ cursor: 'pointer' }}
+                >
+                  {uploading ? 'Uploading...' : (formData.imageUrl ? 'Change Image' : 'Upload Image')}
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    onChange={handleImageUpload} 
+                    style={{ display: 'none' }} 
+                    disabled={uploading}
+                  />
+                </label>
+                {formData.imageUrl && (
+                  <button 
+                    type="button" 
+                    className="btn btn-sm btn-outline-danger" 
+                    onClick={() => setFormData({...formData, imageUrl: ''})}
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            </div>
 
             <label>Measurement Notes (Static How to Measure Image)</label>
             <textarea 

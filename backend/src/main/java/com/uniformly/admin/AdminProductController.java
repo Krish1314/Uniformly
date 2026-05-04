@@ -1,6 +1,7 @@
 package com.uniformly.admin;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -27,6 +28,13 @@ public class AdminProductController {
             @RequestBody AdminProductRequest request
     ) {
         return adminProductService.createProduct(request);
+    }
+
+    @PostMapping("/images")
+    public AdminImageUploadResponse uploadProductImage(
+            @RequestParam("image") MultipartFile image
+    ) {
+        return adminProductService.uploadProductImage(image);
     }
 
     @PatchMapping("/{id}")

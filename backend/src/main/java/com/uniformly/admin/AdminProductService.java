@@ -5,11 +5,24 @@ import com.uniformly.products.*;
 import com.uniformly.schools.School;
 import com.uniformly.schools.SchoolRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 @Service
 public class AdminProductService {
+    private static final Path PRODUCT_UPLOAD_DIR = Path.of("uploads", "products");
+    private static final Set<String> ALLOWED_IMAGE_TYPES = Set.of(
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+    );
 
     private final ProductRepository productRepository;
     private final ProductVariantRepository variantRepository;
@@ -83,6 +96,26 @@ public class AdminProductService {
         return toResponse(saved);
     }
 
+    public AdminImageUploadResponse uploadProductImage(MultipartFile image) {
+        if (image == null || image.isEmpty()) {
+            throw new IllegalArgumentException("Image is required");
+        }
+        if (!ALLOWED_IMAGE_TYPES.contains(image.getContentType())) {
+            throw new IllegalArgumentException("Only JPG, PNG, and WEBP images are allowed");
+        }
+
+        try {
+            Files.createDirectories(PRODUCT_UPLOAD_DIR);
+            String extension = extensionFor(image.getOriginalFilename(), image.getContentType());
+            String fileName = UUID.randomUUID() + extension;
+            Path destination = PRODUCT_UPLOAD_DIR.resolve(fileName).normalize();
+            Files.copy(image.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
+            return new AdminImageUploadResponse("/uploads/products/" + fileName);
+        } catch (IOException ex) {
+            throw new IllegalArgumentException("Could not upload image");
+        }
+    }
+
     public AdminProductResponse updateProduct(Long id, AdminProductRequest request) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Product not found"));
@@ -139,6 +172,20 @@ public class AdminProductService {
                 + color.toUpperCase()
                 + "-"
                 + size.toUpperCase();
+    }
+
+    private String extensionFor(String originalFileName, String contentType) {
+        if (originalFileName != null && originalFileName.contains(".")) {
+            String extension = originalFileName.substring(originalFileName.lastIndexOf(".")).toLowerCase();
+            if (List.of(".jpg", ".jpeg", ".png", ".webp").contains(extension)) {
+                return extension;
+            }
+        }
+        return switch (contentType) {
+            case "image/png" -> ".png";
+            case "image/webp" -> ".webp";
+            default -> ".jpg";
+        };
     }
 
     private String blankToNull(String value) {

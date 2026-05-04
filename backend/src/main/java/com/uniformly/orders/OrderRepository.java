@@ -36,8 +36,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Object[]> findOrderStatusCounts();
 
     @Query("""
-        select o from Order o
+        select distinct o from Order o
         join fetch o.user
+        left join fetch o.address
+        left join fetch o.items
         where (:search is null
             or lower(o.orderNumber) like lower(concat('%', :search, '%'))
             or lower(o.user.firstName) like lower(concat('%', :search, '%'))
