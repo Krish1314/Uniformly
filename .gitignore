@@ -28,3 +28,4 @@ frontend/yarn-error.log*
 .idea/
 *.iml
 .vscode/
+.env
