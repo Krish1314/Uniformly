@@ -12,11 +12,17 @@ public class Category {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Column(nullable = false, unique = true)
+    private String slug;
+
     @Column(name = "size_guide_image_url")
     private String sizeGuideImageUrl;
 
     @Column(name = "size_guide_notes")
     private String sizeGuideNotes;
+
+    @Column(name = "size_chart_data")
+    private String sizeChartData;
 
     protected Category() {
     }
@@ -47,5 +53,13 @@ public class Category {
 
     public void setSizeGuideNotes(String sizeGuideNotes) {
         this.sizeGuideNotes = sizeGuideNotes;
+    }
+
+    public String getSizeChartData() {
+        return sizeChartData;
+    }
+
+    public void setSizeChartData(String sizeChartData) {
+        this.sizeChartData = sizeChartData;
     }
 }

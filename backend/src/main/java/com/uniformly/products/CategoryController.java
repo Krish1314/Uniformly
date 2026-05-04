@@ -28,7 +28,8 @@ record CategoryResponse(
         String name,
         String slug,
         String sizeGuideImageUrl,
-        String sizeGuideNotes
+        String sizeGuideNotes,
+        String sizeChartData
 ) {
     public static CategoryResponse from(Category category) {
         return new CategoryResponse(
@@ -36,7 +37,8 @@ record CategoryResponse(
                 category.getName(),
                 category.getSlug(),
                 category.getSizeGuideImageUrl(),
-                category.getSizeGuideNotes()
+                category.getSizeGuideNotes(),
+                category.getSizeChartData()
         );
     }
 }

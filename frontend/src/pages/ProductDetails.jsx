@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import Footer from '../components/Footer';
+import SizeGuideTabs from '../components/SizeGuideTabs';
 import { productApi } from '../api/productApi';
 import { categoryApi } from '../api/categoryApi';
 import { cartApi } from '../api/cartApi';
@@ -151,7 +152,7 @@ const ProductDetails = () => {
             {/* Size Guide Modal */}
             {showSizeGuide && productCategory && (
               <div className="modal-backdrop d-flex align-items-center justify-content-center p-3" style={{ zIndex: 2000 }}>
-                <div className="bg-white rounded-3 shadow-lg p-4 w-100 position-relative" style={{ maxWidth: '700px' }}>
+                <div className="bg-white rounded-3 shadow-lg p-4 w-100 position-relative" style={{ maxWidth: '800px', maxHeight: '90vh', overflowY: 'auto' }}>
                   <button 
                     className="btn-close position-absolute" 
                     style={{ top: '20px', right: '20px' }}
@@ -160,23 +161,7 @@ const ProductDetails = () => {
                   
                   <h3 className="fw-bold mb-4">{productCategory.name} Size Guide</h3>
                   
-                  <div className="row">
-                    <div className="col-md-6 mb-4 mb-md-0">
-                      {productCategory.sizeGuideImageUrl ? (
-                        <img src={productCategory.sizeGuideImageUrl} alt="Size Guide" className="img-fluid rounded" />
-                      ) : (
-                        <div className="bg-light p-5 text-center rounded">
-                          <p className="text-muted mb-0">Size guide image coming soon.</p>
-                        </div>
-                      )}
-                    </div>
-                    <div className="col-md-6">
-                      <h5 className="fw-bold mb-3">Notes</h5>
-                      <p className="text-muted" style={{ fontSize: '0.9rem', whiteSpace: 'pre-line' }}>
-                        {productCategory.sizeGuideNotes || "Please refer to the chart for accurate measurements."}
-                      </p>
-                    </div>
-                  </div>
+                  <SizeGuideTabs category={productCategory} />
                   
                   <div className="mt-4 text-center">
                     <button className="btn btn-solid w-100" onClick={() => setShowSizeGuide(false)}>Close</button>

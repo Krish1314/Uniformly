@@ -26,10 +26,11 @@ public class AdminCategoryController {
         
         category.setSizeGuideImageUrl(request.imageUrl());
         category.setSizeGuideNotes(request.notes());
+        category.setSizeChartData(request.chartData());
         
         categoryRepository.save(category);
         return ResponseEntity.ok().build();
     }
 }
 
-record SizeGuideRequest(String imageUrl, String notes) {}
+record SizeGuideRequest(String imageUrl, String notes, String chartData) {}

@@ -8,7 +8,8 @@ const AdminSizeGuides = () => {
   const [editingCategory, setEditingCategory] = useState(null);
   const [formData, setFormData] = useState({
     imageUrl: "",
-    notes: ""
+    notes: "",
+    chartData: ""
   });
 
   useEffect(() => {
@@ -31,20 +32,25 @@ const AdminSizeGuides = () => {
     setEditingCategory(cat);
     setFormData({
       imageUrl: cat.sizeGuideImageUrl || "",
-      notes: cat.sizeGuideNotes || ""
+      notes: cat.sizeGuideNotes || "",
+      chartData: cat.sizeChartData || ""
     });
   };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
+      // Validate JSON
+      if (formData.chartData) {
+        JSON.parse(formData.chartData);
+      }
       await categoryApi.updateSizeGuide(editingCategory.id, formData);
       alert("Size guide updated successfully!");
       setEditingCategory(null);
       fetchCategories();
     } catch (err) {
       console.error("Failed to update size guide", err);
-      alert("Error updating size guide.");
+      alert(err instanceof SyntaxError ? "Invalid JSON in Chart Data" : "Error updating size guide.");
     }
   };
 
@@ -103,13 +109,25 @@ const AdminSizeGuides = () => {
               required
             />
 
-            <label>Measurement Notes</label>
+            <label>Measurement Notes (Static How to Measure Image)</label>
             <textarea 
               value={formData.notes}
               onChange={(e) => setFormData({...formData, notes: e.target.value})}
               placeholder="Enter instructions for measurement..."
-              rows={5}
+              rows={3}
             />
+
+            <label>Size Chart Data (JSON)</label>
+            <textarea 
+              value={formData.chartData}
+              onChange={(e) => setFormData({...formData, chartData: e.target.value})}
+              placeholder='{"headers": ["Size", "Waist (in)", "Inseam (in)"], "rows": [{"Size": "30", "Waist (in)": "30.0", "Inseam (in)": "9.5"}]}'
+              rows={8}
+              style={{ fontFamily: 'monospace', fontSize: '12px' }}
+            />
+            <small className="text-muted mb-3 d-block">
+              Paste a JSON with "headers" (array) and "rows" (array of objects mapping headers to values).
+            </small>
 
             <div className="modal-actions">
               <button type="button" onClick={() => setEditingCategory(null)}>Cancel</button>
