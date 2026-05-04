@@ -42,10 +42,20 @@ public class CartController {
         Long userId = com.uniformly.auth.SecurityUtils.getAuthenticatedUserId();
         User user = users.findById(userId).orElseThrow(() -> new NotFoundException("User not found"));
         Product product = products.findById(request.productId()).orElseThrow(() -> new NotFoundException("Product not found"));
-        ProductVariant variant = variants.findById(request.variantId()).orElseThrow(() -> new NotFoundException("Product variant not found"));
-        if (!variant.getProduct().getId().equals(product.getId())) {
-            throw new IllegalArgumentException("Variant does not belong to product");
+
+        // variantId is optional: if not provided, pick the first available variant for this product
+        ProductVariant variant;
+        if (request.variantId() != null) {
+            variant = variants.findById(request.variantId())
+                    .orElseThrow(() -> new NotFoundException("Product variant not found"));
+            if (!variant.getProduct().getId().equals(product.getId())) {
+                throw new IllegalArgumentException("Variant does not belong to product");
+            }
+        } else {
+            variant = variants.findFirstByProductId(product.getId())
+                    .orElseThrow(() -> new NotFoundException("No variants available for this product"));
         }
+
         CartItem item = cartItems.findByUserIdAndVariantId(userId, variant.getId())
                 .map(existing -> {
                     existing.setQuantity(existing.getQuantity() + request.quantity());
@@ -90,7 +100,7 @@ public class CartController {
 
     public record AddCartItemRequest(
             @NotNull Long productId,
-            @NotNull Long variantId,
+            Long variantId,           // optional — backend picks first variant if null
             @NotNull @Min(1) Integer quantity
     ) {}
 

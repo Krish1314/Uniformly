@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import { productApi } from '../api/productApi';
 import { schoolApi } from '../api/schoolApi';
 
 const Catalog = () => {
+  const [searchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [schools, setSchools] = useState([]);
   const [filters, setFilters] = useState({
     search: '',
-    schoolId: '',
+    schoolId: searchParams.get('schoolId') || '',
     category: '',
     sort: '',
   });
