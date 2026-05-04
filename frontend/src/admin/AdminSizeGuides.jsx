@@ -117,19 +117,13 @@ const AdminSizeGuides = () => {
               rows={3}
             />
 
-            <label>Size Chart Data (JSON)</label>
-            <textarea 
-              value={formData.chartData}
-              onChange={(e) => setFormData({...formData, chartData: e.target.value})}
-              placeholder='{"headers": ["Size", "Waist (in)", "Inseam (in)"], "rows": [{"Size": "30", "Waist (in)": "30.0", "Inseam (in)": "9.5"}]}'
-              rows={8}
-              style={{ fontFamily: 'monospace', fontSize: '12px' }}
+            <label>Size Chart Data</label>
+            <SizeChartEditor 
+              initialData={formData.chartData} 
+              onChange={(data) => setFormData({...formData, chartData: data})} 
             />
-            <small className="text-muted mb-3 d-block">
-              Paste a JSON with "headers" (array) and "rows" (array of objects mapping headers to values).
-            </small>
 
-            <div className="modal-actions">
+            <div className="modal-actions mt-4">
               <button type="button" onClick={() => setEditingCategory(null)}>Cancel</button>
               <button type="submit" className="admin-primary-btn">Save Changes</button>
             </div>
@@ -137,6 +131,153 @@ const AdminSizeGuides = () => {
         </div>
       )}
     </AdminLayout>
+  );
+};
+
+const SizeChartEditor = ({ initialData, onChange }) => {
+  const [headers, setHeaders] = useState(["Size", "Measurement (in)"]);
+  const [rows, setRows] = useState([["S", ""]]);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  useEffect(() => {
+    if (isInitialized) return;
+    try {
+      if (initialData) {
+        const parsed = JSON.parse(initialData);
+        if (parsed && parsed.headers && parsed.rows) {
+          setHeaders(parsed.headers);
+          const formattedRows = parsed.rows.map(rowObj => 
+            parsed.headers.map(h => rowObj[h] || "")
+          );
+          setRows(formattedRows);
+          setIsInitialized(true);
+          return;
+        }
+      }
+    } catch(e) {
+      console.error("Failed to parse initial data", e);
+    }
+    // Default fallback
+    setHeaders(["Size", "Measurement (in)"]);
+    setRows([["S", ""]]);
+    setIsInitialized(true);
+  }, [initialData, isInitialized]);
+
+  useEffect(() => {
+    if (!isInitialized) return;
+    const dataToSave = {
+      headers: headers,
+      rows: rows.map(r => {
+        const rowObj = {};
+        headers.forEach((h, i) => {
+          rowObj[h] = r[i];
+        });
+        return rowObj;
+      })
+    };
+    onChange(JSON.stringify(dataToSave));
+  }, [headers, rows, isInitialized]);
+
+  const addColumn = () => {
+    setHeaders([...headers, `New Column`]);
+    setRows(rows.map(r => [...r, ""]));
+  };
+
+  const removeColumn = (idx) => {
+    if (headers.length <= 1) return;
+    setHeaders(headers.filter((_, i) => i !== idx));
+    setRows(rows.map(r => r.filter((_, i) => i !== idx)));
+  };
+
+  const addRow = () => {
+    setRows([...rows, new Array(headers.length).fill("")]);
+  };
+
+  const removeRow = (idx) => {
+    if (rows.length <= 1) return;
+    setRows(rows.filter((_, i) => i !== idx));
+  };
+
+  const updateHeader = (idx, val) => {
+    const newHeaders = [...headers];
+    newHeaders[idx] = val;
+    setHeaders(newHeaders);
+  };
+
+  const updateCell = (rowIdx, colIdx, val) => {
+    const newRows = [...rows];
+    newRows[rowIdx][colIdx] = val;
+    setRows(newRows);
+  };
+
+  return (
+    <div className="size-chart-editor border rounded p-3 bg-light">
+      <div className="table-responsive mb-3">
+        <table className="table table-bordered table-sm bg-white m-0">
+          <thead>
+            <tr>
+              {headers.map((h, i) => (
+                <th key={i} className="position-relative p-2" style={{ minWidth: '120px' }}>
+                  <div className="d-flex align-items-center">
+                    <input 
+                      type="text" 
+                      className="form-control form-control-sm flex-grow-1 border-0 fw-bold shadow-none p-0" 
+                      value={h}
+                      onChange={(e) => updateHeader(i, e.target.value)}
+                      placeholder="Column Name"
+                    />
+                    {headers.length > 1 && (
+                      <button 
+                        type="button" 
+                        className="btn btn-link text-danger p-0 ms-2 text-decoration-none"
+                        onClick={() => removeColumn(i)}
+                        title="Remove Column"
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row, rowIdx) => (
+              <tr key={rowIdx}>
+                {row.map((cell, colIdx) => (
+                  <td key={colIdx} className="p-2">
+                    <input 
+                      type="text" 
+                      className="form-control form-control-sm border-0 shadow-none p-0" 
+                      value={cell}
+                      onChange={(e) => updateCell(rowIdx, colIdx, e.target.value)}
+                      placeholder="Value"
+                    />
+                  </td>
+                ))}
+                <td style={{ width: '40px', verticalAlign: 'middle', textAlign: 'center' }}>
+                   {rows.length > 1 && (
+                    <button 
+                      type="button" 
+                      className="btn btn-link text-danger p-0 text-decoration-none"
+                      onClick={() => removeRow(rowIdx)}
+                      title="Remove Row"
+                    >
+                      ×
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      
+      <div className="d-flex gap-2">
+        <button type="button" className="btn btn-sm btn-outline-secondary" onClick={addRow}>+ Add Row</button>
+        <button type="button" className="btn btn-sm btn-outline-secondary" onClick={addColumn}>+ Add Column</button>
+      </div>
+    </div>
   );
 };
 
