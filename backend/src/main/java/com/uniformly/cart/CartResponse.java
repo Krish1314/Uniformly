@@ -12,7 +12,7 @@ public record CartResponse(
         BigDecimal subtotal = items.stream()
                 .map(item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        int itemCount = items.stream().mapToInt(CartItem::getQuantity).sum();
+        int itemCount = items.size();
         return new CartResponse(items.stream().map(CartItemResponse::from).toList(), subtotal, itemCount);
     }
 
