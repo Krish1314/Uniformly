@@ -23,7 +23,7 @@ const Footer = () => {
             <h5 className="footer-heading">Support</h5>
             <Link to="/orders" className="footer-link">Track Order</Link>
             <Link to="#" className="footer-link">Returns & Exchanges</Link>
-            <Link to="#" className="footer-link">Size Guide</Link>
+            <Link to="/size-guide" className="footer-link">Size Guide</Link>
           </div>
           
           <div className="col-lg-3 col-sm-6">

@@ -1,0 +1,454 @@
+{
+  "/Users/krishpatel/Uniformly/frontend/src/reportWebVitals.js": {
+    "mtime": 1777370936.4569147,
+    "hash": "240e2381f826a9bb84d178b29b7b9abe"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/index.js": {
+    "mtime": 1777882981.9381893,
+    "hash": "1ee62fe5be5611969373cb7591dcca52"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/App.test.js": {
+    "mtime": 1777370936.4559064,
+    "hash": "d18ac434afb00158b91831ac1e36c491"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/App.jsx": {
+    "mtime": 1777486730.9202135,
+    "hash": "5d109639eb8dcac9022413fccc4dd905"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/setupTests.js": {
+    "mtime": 1777370936.4571586,
+    "hash": "1a77571e1a8cf36018a41bcedf60db75"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/context/AuthContext.jsx": {
+    "mtime": 1777467137.3188307,
+    "hash": "e3a650e4c77b8de751815ca23cb9848b"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/context/CartContext.jsx": {
+    "mtime": 1777882955.3208497,
+    "hash": "7a30c41f1ab664a11b86c8bd0ebf18b9"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/admin/AdminLayout.jsx": {
+    "mtime": 1777482814.2115195,
+    "hash": "102fe9c9f1605118ba0437af6ae76e6b"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/admin/AdminDashboard.jsx": {
+    "mtime": 1777484511.0952992,
+    "hash": "92e714c75d479483205f879f048d9bb3"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/admin/AdminOrders.jsx": {
+    "mtime": 1777485650.375779,
+    "hash": "61884739710e0a0290d6fc8901f91ba3"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/admin/AdminProducts.jsx": {
+    "mtime": 1777485684.3710096,
+    "hash": "6c0873ba014a33bce848df53b14dcdd1"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/components/AdminRoute.jsx": {
+    "mtime": 1777486707.2745802,
+    "hash": "eac25f6ec41f2de409ec1ac08bc1c134"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/components/Footer.jsx": {
+    "mtime": 1777487446.2883234,
+    "hash": "c5aced115e135e163f0ff6e5b1b27cb0"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/components/ProtectedRoute.jsx": {
+    "mtime": 1777467158.8195705,
+    "hash": "0a1df81026f9cd33e9e5ed7209998b16"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/components/Navbar.jsx": {
+    "mtime": 1777883011.5377574,
+    "hash": "ef54d2d92f2571bdbd0ddff6f4a3d756"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/components/ProductCard.jsx": {
+    "mtime": 1777465706.2168393,
+    "hash": "06b48027a21d083e1296740e810a6582"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/api/productApi.js": {
+    "mtime": 1777462852.6435747,
+    "hash": "452ba285b668c1952e8d0df511e8e5be"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/api/client.js": {
+    "mtime": 1777462929.2686446,
+    "hash": "7d0040c26250560f23e5e823442ebdc6"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/api/cartApi.js": {
+    "mtime": 1777462856.7080982,
+    "hash": "b99024c7ca977dff1ca450995a1f5510"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/api/checkoutApi.js": {
+    "mtime": 1777462863.2499046,
+    "hash": "231f219f9567c3d4403c51c1dea55207"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/api/addressApi.js": {
+    "mtime": 1777462858.7284257,
+    "hash": "3dd492cba7a080dbe0c7c35a08d66089"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/api/adminApi.js": {
+    "mtime": 1777484463.1617825,
+    "hash": "8dd3e1fddf39fe736f072b3a4f02fac2"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/api/schoolApi.js": {
+    "mtime": 1777462854.6720657,
+    "hash": "ecc2cbb70c4c07559acd9154bf66dda9"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/api/orderApi.js": {
+    "mtime": 1777462860.9788086,
+    "hash": "34c6f282924b12e128e5020888013e86"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/api/authApi.js": {
+    "mtime": 1777462850.4200912,
+    "hash": "71aedbe07072c18b02106c2422fc8fef"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/pages/Profile.jsx": {
+    "mtime": 1777467299.850483,
+    "hash": "4a36150171106574f0e7fc4e97026a9f"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/pages/MyOrders.jsx": {
+    "mtime": 1777464105.4027772,
+    "hash": "0de8413ba069ab1069299c1d8fa09f2f"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/pages/Schools.jsx": {
+    "mtime": 1777882475.1376643,
+    "hash": "1c8f3b35bd83c725e0c3c6c3454d9e21"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/pages/ProductDetails.jsx": {
+    "mtime": 1777883030.3892555,
+    "hash": "2ec1f0e03f15527f11bef05ecc22f16d"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/pages/Orders.jsx": {
+    "mtime": 1777883759.5074337,
+    "hash": "4a9f358e7cbe27c05899eb81bd2f749d"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/pages/Catalog.jsx": {
+    "mtime": 1777882493.821427,
+    "hash": "856366e41c751ee4f4ebb8514f1db9e3"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/pages/Dashboard.jsx": {
+    "mtime": 1777465870.0740397,
+    "hash": "b0bacea3a4dd9de9002b1914052a0fc5"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/pages/Login.jsx": {
+    "mtime": 1777882539.734475,
+    "hash": "b95e8dedfc92e934a156175e84d76fba"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/pages/OrderConfirmation.jsx": {
+    "mtime": 1777379946.192282,
+    "hash": "f2c25575411cd170aa9e0e4ae03dc8e0"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/pages/Cart.jsx": {
+    "mtime": 1777883050.6436923,
+    "hash": "02616ad4f7fa17a5c376e8da87c692a9"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/pages/Address.jsx": {
+    "mtime": 1777484129.6355875,
+    "hash": "8075ddff4f0822512c01aaf08dcb31d5"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/pages/Register.jsx": {
+    "mtime": 1777467783.2830324,
+    "hash": "04db889a5146748d6ae74f8d0e9df7eb"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/pages/Checkout.jsx": {
+    "mtime": 1777883104.758591,
+    "hash": "8562742bfbe3c200e843eb69e75e7526"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/resources/db/migration/V7__admin_product_fields.sql": {
+    "mtime": 1777483940.7222722,
+    "hash": "58804d22fd8abde82610c35980eb0a86"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/resources/db/migration/V4__create_order_tables.sql": {
+    "mtime": 1777462510.4631064,
+    "hash": "934469b2eb34fffeaed5aae9e57d5adc"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/resources/db/migration/V10__seed_multi_school_products.sql": {
+    "mtime": 1777882413.8857043,
+    "hash": "234f47b5c89727bc3bfe9e800ceb0fd7"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/resources/db/migration/V2__create_catalog_tables.sql": {
+    "mtime": 1777462499.4997425,
+    "hash": "4a398e4683414152fe94cd79906c13e3"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/resources/db/migration/V1__create_users.sql": {
+    "mtime": 1777462485.5464659,
+    "hash": "2767c1db05812df7496108dca8d08f8a"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/resources/db/migration/V3__create_addresses_and_cart.sql": {
+    "mtime": 1777462503.7858922,
+    "hash": "e5b1b0a51b9d129e792a610f0a4c4111"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/resources/db/migration/V8__seed_admin_user.sql": {
+    "mtime": 1777542235.100818,
+    "hash": "28ddaf2de858fa2ae0edb3f66418c3f3"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/resources/db/migration/V5__seed_initial_data.sql": {
+    "mtime": 1777542607.5412545,
+    "hash": "4a7ebc37c2028d97c42447a17cc715b2"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/resources/db/migration/V6__seed_dps_products.sql": {
+    "mtime": 1777463828.3478951,
+    "hash": "cdbfb7643d54e220226f6dd8db557894"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/UniformlyApplication.java": {
+    "mtime": 1777461138.1176789,
+    "hash": "f81e07f386cf4b4ace58b288e94d479f"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/products/ProductController.java": {
+    "mtime": 1777465355.666795,
+    "hash": "43e9bb4fa26e2e1385075679f0c2c065"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/products/Product.java": {
+    "mtime": 1777483953.6022854,
+    "hash": "31ab40d45445ebcaedb788d2571d2e3b"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/products/ProductRepository.java": {
+    "mtime": 1777483995.5874732,
+    "hash": "3f3bfb019e805a8cc13d5074486c27d3"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/products/Category.java": {
+    "mtime": 1777461684.9876895,
+    "hash": "c126fabc6a3fee96d4b5a98a46a474aa"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/products/ProductResponse.java": {
+    "mtime": 1777465328.9203384,
+    "hash": "7c32a1a5aa91b60df16b103ddf58f0f0"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/products/ProductVariantRepository.java": {
+    "mtime": 1777882452.345312,
+    "hash": "66550521d6bc6ec8954029abed94e5a4"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/products/CategoryRepository.java": {
+    "mtime": 1777461685.0073779,
+    "hash": "30a081dff95a94b158c94384a1eab7af"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/products/ProductVariant.java": {
+    "mtime": 1777483963.652826,
+    "hash": "b0e7660ead0bf69c8136341cda885db1"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/auth/SecurityConfig.java": {
+    "mtime": 1777486785.561319,
+    "hash": "dc9d9c7f44af90140cf4b518a84c5a52"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/auth/JwtService.java": {
+    "mtime": 1777486748.673992,
+    "hash": "4680380a24d679a8197923a0eea8e828"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/auth/JwtAuthFilter.java": {
+    "mtime": 1777486773.9103184,
+    "hash": "dfda90fb0e511c04122d673141b4ad34"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/auth/SecurityUtils.java": {
+    "mtime": 1777462118.1475708,
+    "hash": "9630173cff26bc5026e2895d2168f0e6"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/auth/AuthController.java": {
+    "mtime": 1777881266.8437817,
+    "hash": "a774e8e09b932b3d4e30ce992d7861df"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/admin/AdminProductRequest.java": {
+    "mtime": 1777484076.1333997,
+    "hash": "2b55248da3715b1f62b662bd5d468431"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/admin/UpdateOrderStatusRequest.java": {
+    "mtime": 1777484043.0416958,
+    "hash": "d612c4b8c147e59683f3bc611db814bd"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/admin/AdminTopProductResponse.java": {
+    "mtime": 1777484022.2014115,
+    "hash": "6aa5e98d31f0109b024da84d725b12a4"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/admin/AdminOrderResponse.java": {
+    "mtime": 1777484049.7952456,
+    "hash": "9a84516c290388b3ac6497cbaf0ab303"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/admin/AdminProductController.java": {
+    "mtime": 1777485256.7935958,
+    "hash": "12015f9f502fdf8b498cef79347ce4ba"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/admin/AdminOrderService.java": {
+    "mtime": 1777485922.2192616,
+    "hash": "9f5f2a6c7a2d7a816423a38d5dab3dd8"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/admin/AdminDashboardResponse.java": {
+    "mtime": 1777484419.1529884,
+    "hash": "7d32ca25474235e98a21f4f7a9d75ae4"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/admin/AdminDashboardService.java": {
+    "mtime": 1777484430.8137608,
+    "hash": "013d4a567431edab02712fb67a6a7c43"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/admin/AdminOrderController.java": {
+    "mtime": 1777485246.9470267,
+    "hash": "db426f9c7273d5de1f99f6062434cfbd"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/admin/AdminProductService.java": {
+    "mtime": 1777485910.0879815,
+    "hash": "1572c401449c0adf0ad6d84ce076ae0f"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/admin/AdminDashboardController.java": {
+    "mtime": 1777485230.7543168,
+    "hash": "66b071d3db807ad61f21007be35b5699"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/admin/AdminRecentOrderResponse.java": {
+    "mtime": 1777484014.5905552,
+    "hash": "83f8ac59b9e36acfb9ebd95a8620aaab"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/admin/AdminProductResponse.java": {
+    "mtime": 1777484082.823226,
+    "hash": "efb07966ac30d555ea472566406d88a2"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/checkout/CheckoutController.java": {
+    "mtime": 1777462229.6989098,
+    "hash": "b89f842ba6e4567d7b3606cb9942c723"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/common/BaseEntity.java": {
+    "mtime": 1777461684.8086224,
+    "hash": "75ada5b52ca49bd4059ec795e25e71af"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/common/ApiExceptionHandler.java": {
+    "mtime": 1777461684.848074,
+    "hash": "6f549dbc0637719970a1ce07bdebf8e7"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/common/NotFoundException.java": {
+    "mtime": 1777461684.8282201,
+    "hash": "dc2c34c916aa82aef4eed4da06435c38"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/addresses/AddressRepository.java": {
+    "mtime": 1777461685.1395297,
+    "hash": "5bd978d06ae812ced504cd416b801267"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/addresses/AddressController.java": {
+    "mtime": 1777462213.1256242,
+    "hash": "aebf2df987522d21b82e4ccb20fbf7d3"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/addresses/Address.java": {
+    "mtime": 1777461685.1208992,
+    "hash": "398ea928d701805195bef1a49b6cedb9"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/addresses/AddressResponse.java": {
+    "mtime": 1777461685.1582074,
+    "hash": "787ce620162052f514b99c4fd4d0530e"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/users/UserResponse.java": {
+    "mtime": 1777461684.9071574,
+    "hash": "aef240d347286b698b3168e034520ef0"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/users/User.java": {
+    "mtime": 1777461684.867436,
+    "hash": "8f191b7abad575b975cab7d35900bf69"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/users/UserRepository.java": {
+    "mtime": 1777461684.8866773,
+    "hash": "46d0d1cb96b78b1899d2a08da0dc9926"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/users/UserController.java": {
+    "mtime": 1777462151.1860237,
+    "hash": "1b5997bc2275de3d25e99716a031cdba"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/cart/CartItemRepository.java": {
+    "mtime": 1777461707.0671108,
+    "hash": "928d526c2b42f8122dfd060abf70047d"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/cart/CartController.java": {
+    "mtime": 1777882435.0021586,
+    "hash": "20813dbb2a331249ba78032bbca5b776"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/cart/CartItem.java": {
+    "mtime": 1777461707.0458076,
+    "hash": "032de83c167c28c0524ca0cbc1f2ee9a"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/cart/CartResponse.java": {
+    "mtime": 1777883473.2601807,
+    "hash": "967323add2d2c34c8cf92eee291ac0b7"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/orders/Order.java": {
+    "mtime": 1777483972.947864,
+    "hash": "eaa95723e96af1249699da17996ee6ee"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/orders/OrderRepository.java": {
+    "mtime": 1777484408.1265328,
+    "hash": "4c8c447c5dc7fc9f774624fe8f89b98d"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/orders/OrderItem.java": {
+    "mtime": 1777461707.1327481,
+    "hash": "185fd8082bee71ddfe2e8299799ff5bc"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/orders/OrderController.java": {
+    "mtime": 1777462249.3943198,
+    "hash": "1f68fab76ef1237d8cf72f7df1bdbfd8"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/orders/Payment.java": {
+    "mtime": 1777461707.1813688,
+    "hash": "e2d425ee22ee463aeb616d640c3f2f86"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/orders/OrderStatusHistoryRepository.java": {
+    "mtime": 1777461707.2270157,
+    "hash": "9867a5bd85f8725f9dd8f48cfa7ca1fc"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/orders/OrderResponse.java": {
+    "mtime": 1777461707.2691994,
+    "hash": "1c690738450c9341f3ad7fad35b2099c"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/orders/OrderStatusHistory.java": {
+    "mtime": 1777461707.1552172,
+    "hash": "3930bec348805e20f2cbdce46a0f41d5"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/orders/PaymentRepository.java": {
+    "mtime": 1777461707.248404,
+    "hash": "c6a5361c6d8b89550703aaec8c70851d"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/schools/School.java": {
+    "mtime": 1777461684.927947,
+    "hash": "8a1a7e25b694eccad3283d8d88354123"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/schools/SchoolRepository.java": {
+    "mtime": 1777461684.9473164,
+    "hash": "0b844d6362e24c4ba13d15eb7eb39f7a"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/schools/SchoolController.java": {
+    "mtime": 1777461730.157024,
+    "hash": "3af7ac057c105d72f43b38a66ee71f07"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/java/com/uniformly/schools/SchoolSummary.java": {
+    "mtime": 1777461684.9681988,
+    "hash": "d7b9103c5c9a287a6012518f5a0b0cd9"
+  },
+  "/Users/krishpatel/Uniformly/frontend/README.md": {
+    "mtime": 1777370936.4527276,
+    "hash": "33822368bfb3ad3de6fceb9cd76aa0dd"
+  },
+  "/Users/krishpatel/Uniformly/frontend/public/index.html": {
+    "mtime": 1777370936.453732,
+    "hash": "ef8a02db437c74f2ecb0d88becc4b9d4"
+  },
+  "/Users/krishpatel/Uniformly/frontend/public/robots.txt": {
+    "mtime": 1777370936.454988,
+    "hash": "fa1ded1ed7c11438a9b0385b1e112850"
+  },
+  "/Users/krishpatel/Uniformly/backend/src/main/resources/application.yml": {
+    "mtime": 1777464378.0624762,
+    "hash": "42bd738734d9c1195d225b1c1f0b4b6f"
+  },
+  "/Users/krishpatel/Uniformly/frontend/public/logo512.png": {
+    "mtime": 1777370936.4543297,
+    "hash": "917515db74ea8d1aee6a246cfbcc0b45"
+  },
+  "/Users/krishpatel/Uniformly/frontend/public/logo192.png": {
+    "mtime": 1777370936.4540768,
+    "hash": "33dbdd0177549353eeeb785d02c294af"
+  },
+  "/Users/krishpatel/Uniformly/frontend/public/images/trousers.jpg": {
+    "mtime": 1777379894.3502138,
+    "hash": "4e018f7b18cfa216272741858b4ecdf6"
+  },
+  "/Users/krishpatel/Uniformly/frontend/public/images/sweater.jpg": {
+    "mtime": 1777379894.3530774,
+    "hash": "4aa00b5c87f9838ebcc5f4b672f85612"
+  },
+  "/Users/krishpatel/Uniformly/frontend/public/images/blazer.jpg": {
+    "mtime": 1777379894.355374,
+    "hash": "f85f08832dacd9c0d661304d1f6d9580"
+  },
+  "/Users/krishpatel/Uniformly/frontend/src/logo.svg": {
+    "mtime": 1777370936.4566708,
+    "hash": "06e733283fa43d1dd57738cfc409adbd"
+  }
+}

@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import Footer from '../components/Footer';
 import { productApi } from '../api/productApi';
+import { categoryApi } from '../api/categoryApi';
 import { cartApi } from '../api/cartApi';
 import { useCart } from '../context/CartContext';
 
@@ -16,12 +17,20 @@ const ProductDetails = () => {
   
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [showSizeGuide, setShowSizeGuide] = useState(false);
 
   useEffect(() => {
-    const loadProductDetails = async () => {
+    const loadData = async () => {
       try {
-        const prodRes = await productApi.getProductById(id);
+        const [prodRes, catRes] = await Promise.all([
+          productApi.getProductById(id),
+          categoryApi.getCategories()
+        ]);
+        
         setProduct(prodRes.data);
+        setCategories(catRes.data);
+        
         if (prodRes.data.variants && prodRes.data.variants.length > 0) {
           setSize(prodRes.data.variants[0].size);
           setColor(prodRes.data.variants[0].color);
@@ -30,11 +39,13 @@ const ProductDetails = () => {
         const relatedRes = await productApi.getRelatedProducts(id);
         setRelatedProducts(relatedRes.data);
       } catch (err) {
-        console.error("Failed to load product details", err);
+        console.error("Failed to load data", err);
       }
     };
-    loadProductDetails();
+    loadData();
   }, [id]);
+
+  const productCategory = categories.find(c => c.id === product?.categoryId);
 
   const handleAddToCart = async () => {
     if (!product) return;
@@ -114,7 +125,15 @@ const ProductDetails = () => {
             <div className="mb-4">
               <div className="d-flex justify-content-between align-items-center mb-3">
                 <div className="fw-bold fs-5">Select Size</div>
-                <Link to="#" className="text-dark text-decoration-none fw-medium" style={{ fontSize: '0.85rem' }}>Size Guide</Link>
+                {productCategory && (
+                  <button 
+                    className="btn btn-link p-0 text-dark text-decoration-none fw-medium" 
+                    style={{ fontSize: '0.85rem' }}
+                    onClick={() => setShowSizeGuide(true)}
+                  >
+                    Size Guide
+                  </button>
+                )}
               </div>
               <div className="d-flex flex-wrap">
                 {sizes.map(s => (
@@ -128,6 +147,43 @@ const ProductDetails = () => {
                 ))}
               </div>
             </div>
+
+            {/* Size Guide Modal */}
+            {showSizeGuide && productCategory && (
+              <div className="modal-backdrop d-flex align-items-center justify-content-center p-3" style={{ zIndex: 2000 }}>
+                <div className="bg-white rounded-3 shadow-lg p-4 w-100 position-relative" style={{ maxWidth: '700px' }}>
+                  <button 
+                    className="btn-close position-absolute" 
+                    style={{ top: '20px', right: '20px' }}
+                    onClick={() => setShowSizeGuide(false)}
+                  ></button>
+                  
+                  <h3 className="fw-bold mb-4">{productCategory.name} Size Guide</h3>
+                  
+                  <div className="row">
+                    <div className="col-md-6 mb-4 mb-md-0">
+                      {productCategory.sizeGuideImageUrl ? (
+                        <img src={productCategory.sizeGuideImageUrl} alt="Size Guide" className="img-fluid rounded" />
+                      ) : (
+                        <div className="bg-light p-5 text-center rounded">
+                          <p className="text-muted mb-0">Size guide image coming soon.</p>
+                        </div>
+                      )}
+                    </div>
+                    <div className="col-md-6">
+                      <h5 className="fw-bold mb-3">Notes</h5>
+                      <p className="text-muted" style={{ fontSize: '0.9rem', whiteSpace: 'pre-line' }}>
+                        {productCategory.sizeGuideNotes || "Please refer to the chart for accurate measurements."}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4 text-center">
+                    <button className="btn btn-solid w-100" onClick={() => setShowSizeGuide(false)}>Close</button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="mb-5 pb-3 border-bottom">
               <div className="fw-bold fs-5 mb-3">Select Color</div>

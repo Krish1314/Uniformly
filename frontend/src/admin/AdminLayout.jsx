@@ -30,6 +30,13 @@ const AdminLayout = ({ title, children, actions }) => {
           >
             <span>⬡</span> Products
           </Link>
+          
+          <Link
+            className={isActive("/admin/size-guides") ? "active" : ""}
+            to="/admin/size-guides"
+          >
+            <span>📏</span> Size Guides
+          </Link>
         </nav>
 
         <Link className="back-store" to="/">
