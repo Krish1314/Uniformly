@@ -4,10 +4,12 @@ import ProductCard from '../components/ProductCard';
 import Footer from '../components/Footer';
 import { productApi } from '../api/productApi';
 import { cartApi } from '../api/cartApi';
+import { useCart } from '../context/CartContext';
 
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { refreshCart } = useCart();
   const [qty, setQty] = useState(1);
   const [size, setSize] = useState('');
   const [color, setColor] = useState('');
@@ -54,10 +56,10 @@ const ProductDetails = () => {
         variantId: variantId,
         quantity: qty,
       });
-
+      await refreshCart(); // update badge in navbar
       navigate("/cart");
     } catch (err) {
-      alert("Failed to add to cart. Are you logged in?");
+      alert("Failed to add to cart. Please make sure you are logged in.");
     }
   };
 

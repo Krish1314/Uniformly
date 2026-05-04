@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import { cartApi } from '../api/cartApi';
+import { useCart } from '../context/CartContext';
 
 const Cart = () => {
     const navigate = useNavigate();
+    const { refreshCart } = useCart();
     const [cart, setCart] = useState({
         items: [],
         subtotal: 0,
@@ -32,6 +34,7 @@ const Cart = () => {
         try {
             const response = await cartApi.updateItem(cartItemId, quantity);
             setCart(response.data);
+            refreshCart();
         } catch (err) {
             console.error("Failed to update cart", err);
         }
@@ -41,6 +44,7 @@ const Cart = () => {
         try {
             const response = await cartApi.removeItem(cartItemId);
             setCart(response.data);
+            refreshCart();
         } catch (err) {
             console.error("Failed to remove item", err);
         }
