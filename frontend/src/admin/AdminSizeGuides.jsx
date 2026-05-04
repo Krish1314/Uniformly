@@ -212,15 +212,28 @@ const SizeChartEditor = ({ initialData, onChange }) => {
 
   return (
     <div className="size-chart-editor border rounded p-3 bg-light">
+      <datalist id="measurement-suggestions">
+        <option value="Size" />
+        <option value="Brand Size" />
+        <option value="Chest (in)" />
+        <option value="Front Length (in)" />
+        <option value="Across Shoulder (in)" />
+        <option value="Waist (in)" />
+        <option value="Inseam Length (in)" />
+        <option value="Sleeve Length (in)" />
+        <option value="Hip (in)" />
+      </datalist>
+
       <div className="table-responsive mb-3">
         <table className="table table-bordered table-sm bg-white m-0">
           <thead>
             <tr>
               {headers.map((h, i) => (
-                <th key={i} className="position-relative p-2" style={{ minWidth: '120px' }}>
+                <th key={i} className="position-relative p-2" style={{ minWidth: '130px' }}>
                   <div className="d-flex align-items-center">
                     <input 
                       type="text" 
+                      list="measurement-suggestions"
                       className="form-control form-control-sm flex-grow-1 border-0 fw-bold shadow-none p-0" 
                       value={h}
                       onChange={(e) => updateHeader(i, e.target.value)}
