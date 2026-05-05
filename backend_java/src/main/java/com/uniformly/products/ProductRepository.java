@@ -1,5 +1,6 @@
 package com.uniformly.products;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -7,8 +8,15 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
+    @EntityGraph(attributePaths = {"school", "category", "variants"})
+    java.util.Optional<Product> findById(Long id);
+    @EntityGraph(attributePaths = {"school", "category", "variants"})
+    List<Product> findAll();
+
+    @EntityGraph(attributePaths = {"school", "category", "variants"})
     List<Product> findTop8ByFeaturedTrueAndActiveTrueOrderByCreatedAtDesc();
 
+    @EntityGraph(attributePaths = {"school", "category", "variants"})
     List<Product> findTop4BySchoolIdAndActiveTrueAndIdNot(Long schoolId, Long id);
 
     @Query("""
