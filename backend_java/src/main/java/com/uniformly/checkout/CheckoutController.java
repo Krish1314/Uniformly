@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/checkout")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class CheckoutController {
     private final UserRepository users;
     private final AddressRepository addresses;

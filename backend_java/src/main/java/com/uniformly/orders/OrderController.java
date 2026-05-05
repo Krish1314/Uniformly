@@ -8,7 +8,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/orders")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class OrderController {
     private final OrderRepository orders;
     private final OrderStatusHistoryRepository statusHistory;

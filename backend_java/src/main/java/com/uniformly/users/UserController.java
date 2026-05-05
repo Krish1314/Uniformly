@@ -8,7 +8,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/users")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class UserController {
     private final UserRepository users;
 
