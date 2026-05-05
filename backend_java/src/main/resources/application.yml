@@ -3,9 +3,12 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/uniformly_db
-    username: krishpatel
-    password:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    hikari:
+      max-lifetime: 540000
+      keepalive-time: 30000
 
   jpa:
     hibernate:

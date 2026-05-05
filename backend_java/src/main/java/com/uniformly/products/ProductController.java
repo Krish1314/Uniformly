@@ -16,6 +16,7 @@ public class ProductController {
     }
 
     @GetMapping
+    @org.springframework.cache.annotation.Cacheable("products")
     public List<ProductResponse> getProducts(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) Long schoolId,
@@ -56,6 +57,7 @@ public class ProductController {
     }
 
     @GetMapping("/featured")
+    @org.springframework.cache.annotation.Cacheable("featuredProducts")
     public List<ProductResponse> getFeaturedProducts() {
         return products.findTop8ByFeaturedTrueAndActiveTrueOrderByCreatedAtDesc()
                 .stream()
