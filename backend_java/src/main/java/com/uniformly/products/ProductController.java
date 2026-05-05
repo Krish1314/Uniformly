@@ -66,6 +66,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
+    @org.springframework.cache.annotation.Cacheable(value = "productDetails", key = "#id")
     public ProductResponse getProductById(@PathVariable Long id) {
         Product product = products.findById(id)
                 .filter(Product::isActive)
@@ -74,6 +75,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}/related")
+    @org.springframework.cache.annotation.Cacheable(value = "relatedProducts", key = "#id")
     public List<ProductResponse> getRelatedProducts(@PathVariable Long id) {
         Product product = products.findById(id)
                 .filter(Product::isActive)
