@@ -1,5 +1,10 @@
 {
   "dependencies": {
+    "@supabase/ssr": "^0.10.2",
+    "@supabase/supabase-js": "^2.105.3",
     "graphify": "^1.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }

@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Playfair Display', serif;
+  
+  --color-primary-black: #080808;
+  --color-secondary-bg: #f4f6f8;
+  --color-text-dark: #111111;
+  --color-text-muted: #555555;
+  --color-border-light: #e0e0e0;
+}
+
+/* Custom Components */
+.info-block {
+  @apply bg-[#eef1f3] rounded-xl p-6;
+}
+
+.profile-link-card {
+  @apply bg-[#eef1f3] rounded-xl p-6 flex flex-col transition-colors cursor-pointer hover:bg-[#e0e4e8];
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Footer Styles */
+.footer {
+  @apply bg-white py-14 border-t border-[#e0e0e0];
+}
+
+.footer-heading {
+  @apply font-bold text-lg mb-4;
+}
+
+.footer-link {
+  @apply block text-[#555555] text-sm mb-2 hover:text-[#080808];
+}
+
+.footer-text {
+  @apply text-sm text-[#555555] leading-relaxed;
+}
+
+/* Base Styles */
+body {
+  @apply bg-gray-50 text-gray-900 min-h-screen;
+}

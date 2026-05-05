@@ -1,31 +1,41 @@
-# ===== Backend (Spring Boot / Maven) =====
-backend/target/
-backend/*.iml
-backend/.mvn/
-backend/.idea/
-backend/*.class
-backend/*.jar
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
 
-# Sensitive config — never commit real credentials
-backend/src/main/resources/application.yml
-backend/src/main/resources/application-*.yml
-!backend/src/main/resources/application.yml.example
+# Testing
+coverage/
 
-# ===== Frontend (React / Node) =====
-frontend/node_modules/
-frontend/build/
-frontend/.env
-frontend/.env.local
-frontend/.env.development.local
-frontend/.env.test.local
-frontend/.env.production.local
-frontend/npm-debug.log*
-frontend/yarn-debug.log*
-frontend/yarn-error.log*
+# Next.js
+.next/
+out/
 
-# ===== OS / Editor =====
+# Production
+build/
+
+# Misc
 .DS_Store
-.idea/
-*.iml
-.vscode/
+*.pem
+
+# Env
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Agent folders
+.* /
+!.gitignore
+!.github/
+!backend/
+!frontend/
+!frontend_cra/
+!backend_java/

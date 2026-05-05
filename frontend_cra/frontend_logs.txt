@@ -1,0 +1,183 @@
+
+> frontend@0.1.0 start
+> react-scripts start
+
+(node:67267) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:67267) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+Starting the development server...
+
+Compiled successfully!
+
+You can now view frontend in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://192.168.1.22:3000
+
+Note that the development build is not optimized.
+To create a production build, use npm run build.
+
+webpack compiled successfully
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Failed to compile.
+
+Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/node_modules/@pmmmwh/react-refresh-webpack-plugin/client/ReactRefreshEntry.js' in '/Users/krishpatel/Uniformly/frontend'
+ERROR in Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/node_modules/@pmmmwh/react-refresh-webpack-plugin/client/ReactRefreshEntry.js' in '/Users/krishpatel/Uniformly/frontend'
+
+ERROR in Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/node_modules/webpack-dev-server/client/index.js?protocol=ws%3A&hostname=0.0.0.0&port=3000&pathname=%2Fws&logging=none&overlay=%7B%22errors%22%3Atrue%2C%22warnings%22%3Afalse%7D&reconnect=10&hot=true&live-reload=true' in '/Users/krishpatel/Uniformly/frontend'
+
+ERROR in Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/node_modules/webpack/hot/dev-server.js' in '/Users/krishpatel/Uniformly/frontend'
+
+ERROR in main
+Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/src/index.js' in '/Users/krishpatel/Uniformly/frontend'
+
+ERROR in Error: Child compilation failed:
+Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/node_modules/html-webpack-plugin/lib/loader.js' in '/Users/krishpatel/Uniformly/frontend'
+ModuleNotFoundError: Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/node_modules/html-webpack-plugin/lib/loader.js' in '/Users/krishpatel/Uniformly/frontend'
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/Compilation.js:2143:28
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:1076:13
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:10:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:456:22
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:9:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:642:22
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:197:10
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:878:23
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:1390:5
+    at /Users/krishpatel/Uniformly/frontend/node_modules/neo-async/async.js:2830:7
+    at done (/Users/krishpatel/Uniformly/frontend/node_modules/neo-async/async.js:2925:13)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:1353:23
+    at finishWithoutResolve (/Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:912:11)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1001:14
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:16:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:27:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/DescriptionFilePlugin.js:97:43
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:15:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:15:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:16:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:27:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/DescriptionFilePlugin.js:97:43
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:16:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:15:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/DirectoryExistsPlugin.js:43:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+
+1 ERROR in child compilations (Use 'stats.children: true' resp. '--stats-children' for more details)
+webpack compiled with 6 errors
+Compiling...
+Failed to compile.
+
+Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/node_modules/@pmmmwh/react-refresh-webpack-plugin/client/ReactRefreshEntry.js' in '/Users/krishpatel/Uniformly/frontend'
+ERROR in Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/node_modules/@pmmmwh/react-refresh-webpack-plugin/client/ReactRefreshEntry.js' in '/Users/krishpatel/Uniformly/frontend'
+
+ERROR in Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/node_modules/webpack-dev-server/client/index.js?protocol=ws%3A&hostname=0.0.0.0&port=3000&pathname=%2Fws&logging=none&overlay=%7B%22errors%22%3Atrue%2C%22warnings%22%3Afalse%7D&reconnect=10&hot=true&live-reload=true' in '/Users/krishpatel/Uniformly/frontend'
+
+ERROR in Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/node_modules/webpack/hot/dev-server.js' in '/Users/krishpatel/Uniformly/frontend'
+
+ERROR in main
+Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/src/index.js' in '/Users/krishpatel/Uniformly/frontend'
+
+ERROR in Error: Child compilation failed:
+Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/node_modules/html-webpack-plugin/lib/loader.js' in '/Users/krishpatel/Uniformly/frontend'
+ModuleNotFoundError: Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/node_modules/html-webpack-plugin/lib/loader.js' in '/Users/krishpatel/Uniformly/frontend'
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/Compilation.js:2143:28
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:1076:13
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:10:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:456:22
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:9:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:642:22
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:197:10
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:878:23
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:1390:5
+    at /Users/krishpatel/Uniformly/frontend/node_modules/neo-async/async.js:2830:7
+    at done (/Users/krishpatel/Uniformly/frontend/node_modules/neo-async/async.js:2925:13)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:1353:23
+    at finishWithoutResolve (/Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:912:11)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1001:14
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:16:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:27:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/DescriptionFilePlugin.js:97:43
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:15:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:15:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:16:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:27:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/DescriptionFilePlugin.js:97:43
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:16:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:15:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/DirectoryExistsPlugin.js:43:15
+    at processTicksAndRejections (node:internal/process/task_queues:89:21)
+    at runNextTicks (node:internal/process/task_queues:69:3)
+    at process.processImmediate (node:internal/timers:472:9)
+
+1 ERROR in child compilations (Use 'stats.children: true' resp. '--stats-children' for more details)
+webpack compiled with 6 errors
+Compiling...
+Failed to compile.
+
+Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/node_modules/@pmmmwh/react-refresh-webpack-plugin/client/ReactRefreshEntry.js' in '/Users/krishpatel/Uniformly/frontend'
+ERROR in Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/node_modules/@pmmmwh/react-refresh-webpack-plugin/client/ReactRefreshEntry.js' in '/Users/krishpatel/Uniformly/frontend'
+
+ERROR in Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/node_modules/webpack-dev-server/client/index.js?protocol=ws%3A&hostname=0.0.0.0&port=3000&pathname=%2Fws&logging=none&overlay=%7B%22errors%22%3Atrue%2C%22warnings%22%3Afalse%7D&reconnect=10&hot=true&live-reload=true' in '/Users/krishpatel/Uniformly/frontend'
+
+ERROR in Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/node_modules/webpack/hot/dev-server.js' in '/Users/krishpatel/Uniformly/frontend'
+
+ERROR in main
+Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/src/index.js' in '/Users/krishpatel/Uniformly/frontend'
+
+ERROR in Error: Child compilation failed:
+Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/public/index.html' in '/Users/krishpatel/Uniformly/frontend'
+ModuleNotFoundError: Module not found: Error: Can't resolve '/Users/krishpatel/Uniformly/frontend/public/index.html' in '/Users/krishpatel/Uniformly/frontend'
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/Compilation.js:2143:28
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:1076:13
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:10:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:456:22
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:9:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:642:22
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:197:10
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:917:25
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:1162:8
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:1292:5
+    at /Users/krishpatel/Uniformly/frontend/node_modules/neo-async/async.js:6883:13
+    at /Users/krishpatel/Uniformly/frontend/node_modules/webpack/lib/NormalModuleFactory.js:1275:45
+    at finishWithoutResolve (/Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:912:11)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1001:14
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:16:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:27:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/DescriptionFilePlugin.js:97:43
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:15:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:16:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:16:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:27:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/DescriptionFilePlugin.js:97:43
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:16:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/Resolver.js:1080:5
+    at eval (eval at create (/Users/krishpatel/Uniformly/frontend/node_modules/tapable/lib/HookCodeFactory.js:31:10), <anonymous>:15:1)
+    at /Users/krishpatel/Uniformly/frontend/node_modules/enhanced-resolve/lib/DirectoryExistsPlugin.js:43:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+
+1 ERROR in child compilations (Use 'stats.children: true' resp. '--stats-children' for more details)
+webpack compiled with 6 errors

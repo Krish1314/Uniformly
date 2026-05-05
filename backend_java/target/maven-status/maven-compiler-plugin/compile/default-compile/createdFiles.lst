@@ -1,0 +1,10 @@
+com/uniformly/addresses/AddressController.class
+com/uniformly/common/BaseEntity.class
+com/uniformly/users/UserRepository.class
+com/uniformly/products/CategoryRepository.class
+com/uniformly/users/User.class
+com/uniformly/addresses/AddressResponse.class
+com/uniformly/addresses/AddressRepository.class
+com/uniformly/UniformlyApplication.class
+com/uniformly/addresses/Address.class
+com/uniformly/addresses/AddressController$AddressRequest.class
