@@ -9,6 +9,8 @@ spring:
     hikari:
       max-lifetime: 540000
       keepalive-time: 30000
+      data-source-properties:
+        prepareThreshold: 0
 
   jpa:
     hibernate:
