@@ -7,7 +7,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/schools")
-@CrossOrigin(origins = "*")
 public class SchoolController {
     private final SchoolRepository schools;
 

@@ -46,6 +46,7 @@ com/uniformly/cart/CartController$AddCartItemRequest.class
 com/uniformly/products/CategoryResponse.class
 com/uniformly/orders/OrderStatusHistoryRepository.class
 com/uniformly/products/ProductVariantRepository.class
+com/uniformly/users/UserController.class
 com/uniformly/cart/CartResponse$CartItemResponse.class
 com/uniformly/auth/AuthController$AuthResponse.class
 com/uniformly/products/ProductController.class
@@ -66,6 +67,7 @@ com/uniformly/products/ProductResponse.class
 com/uniformly/orders/OrderRepository.class
 com/uniformly/schools/SchoolRepository.class
 com/uniformly/addresses/Address.class
+com/uniformly/users/UserController$UpdateUserRequest.class
 com/uniformly/addresses/AddressController$AddressRequest.class
 com/uniformly/auth/AuthController$RegisterRequest.class
 com/uniformly/auth/JwtService.class

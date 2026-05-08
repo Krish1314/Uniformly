@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-@CrossOrigin(origins = "*")
 public class AuthController {
     private final UserRepository users;
     private final JwtService jwtService;
@@ -46,19 +45,7 @@ public class AuthController {
         User user = users.findByEmailIgnoreCase(request.email())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
 
-        boolean matches;
-        String storedHash = user.getPasswordHash();
-
-        // Handle legacy plaintext passwords (e.g. seeded test data)
-        if (storedHash != null && storedHash.startsWith("$2a$")) {
-            // Properly BCrypt-hashed
-            matches = passwordEncoder.matches(request.password(), storedHash);
-        } else {
-            // Plaintext comparison for seeded/legacy accounts
-            matches = request.password().equals(storedHash);
-        }
-
-        if (!matches) {
+        if (!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
             throw new IllegalArgumentException("Invalid email or password");
         }
 
