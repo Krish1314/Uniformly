@@ -15,42 +15,15 @@ public class ProductController {
     }
 
     @GetMapping
-    @org.springframework.cache.annotation.Cacheable("products")
+    @org.springframework.cache.annotation.Cacheable(value = "products", key = "{#search, #schoolId, #category, #sort}")
     public List<ProductResponse> getProducts(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) Long schoolId,
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String sort
     ) {
-        List<Product> list = products.findAll().stream()
-                .filter(Product::isActive)
-                .filter(p -> search == null || search.isBlank() || p.getName().toLowerCase().contains(search.toLowerCase()))
-                .filter(p -> schoolId == null || (p.getSchool() != null && p.getSchool().getId().equals(schoolId)))
-                .filter(p -> category == null || category.isBlank() || 
-                        (p.getCategory() != null && (p.getCategory().getSlug().equalsIgnoreCase(category) || p.getCategory().getName().equalsIgnoreCase(category))))
-                .collect(java.util.stream.Collectors.toList());
-        
-        if ("price_asc".equalsIgnoreCase(sort)) {
-            list.sort((a, b) -> {
-                java.math.BigDecimal p1 = a.getPrice() != null ? a.getPrice() : java.math.BigDecimal.ZERO;
-                java.math.BigDecimal p2 = b.getPrice() != null ? b.getPrice() : java.math.BigDecimal.ZERO;
-                return p1.compareTo(p2);
-            });
-        } else if ("price_desc".equalsIgnoreCase(sort)) {
-            list.sort((a, b) -> {
-                java.math.BigDecimal p1 = a.getPrice() != null ? a.getPrice() : java.math.BigDecimal.ZERO;
-                java.math.BigDecimal p2 = b.getPrice() != null ? b.getPrice() : java.math.BigDecimal.ZERO;
-                return p2.compareTo(p1);
-            });
-        } else {
-            list.sort((a, b) -> {
-                java.time.LocalDateTime t1 = a.getCreatedAt() != null ? a.getCreatedAt() : java.time.LocalDateTime.MIN;
-                java.time.LocalDateTime t2 = b.getCreatedAt() != null ? b.getCreatedAt() : java.time.LocalDateTime.MIN;
-                return t2.compareTo(t1);
-            });
-        }
-
-        return list.stream()
+        return products.search(blankToNull(search), schoolId, blankToNull(category), blankToNull(sort))
+                .stream()
                 .map(ProductResponse::from)
                 .toList();
     }

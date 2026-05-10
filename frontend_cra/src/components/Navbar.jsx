@@ -5,6 +5,7 @@ import { useCart } from '../context/CartContext';
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,15 +22,22 @@ const Navbar = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+  
+  // Close mobile menu when location changes
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location]);
 
   if (location.pathname.startsWith('/admin')) {
     return null;
   }
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+  const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
 
   const handleAction = (path) => {
     setDropdownOpen(false);
+    setMobileMenuOpen(false);
     navigate(path);
   };
 
@@ -43,10 +51,15 @@ const Navbar = () => {
     <nav className="navbar navbar-expand-lg navbar-custom sticky-top">
       <div className="container">
         <Link className="navbar-brand" to="/">Uniformly</Link>
-        <button className="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <button 
+          className="navbar-toggler border-0" 
+          type="button" 
+          onClick={toggleMobileMenu}
+          aria-expanded={mobileMenuOpen}
+        >
           <span className="navbar-toggler-icon" style={{ filter: 'invert(1)' }}></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
+        <div className={`collapse navbar-collapse ${mobileMenuOpen ? 'show' : ''}`} id="navbarNav">
           <ul className="navbar-nav ms-auto align-items-center">
             <li className="nav-item">
               <Link className="nav-link" to="/schools">Schools</Link>
