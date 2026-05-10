@@ -8,6 +8,9 @@ const Catalog = () => {
   const [searchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [schools, setSchools] = useState([]);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
   const [filters, setFilters] = useState({
     search: '',
     schoolId: searchParams.get('schoolId') || '',
@@ -30,26 +33,29 @@ const Catalog = () => {
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const params = {};
+        const params = { page, size: 12 };
         if (filters.search) params.search = filters.search;
         if (filters.schoolId) params.schoolId = filters.schoolId;
         if (filters.category) params.category = filters.category;
         if (filters.sort) params.sort = filters.sort;
 
         const response = await productApi.getProducts(params);
-        setProducts(response.data);
+        setProducts(response.data.products);
+        setTotalPages(response.data.totalPages);
+        setTotalItems(response.data.totalItems);
       } catch (err) {
         console.error("Failed to load products", err);
       }
     };
     loadProducts();
-  }, [filters]);
+  }, [filters, page]);
 
   const handleFilterChange = (e) => {
     setFilters(prev => ({
       ...prev,
       [e.target.name]: e.target.value
     }));
+    setPage(0); // Reset to first page on filter change
   };
 
   return (
@@ -129,24 +135,56 @@ const Catalog = () => {
 
         {/* Right Content Grid */}
         <div className="col-lg-9">
-          <div className="mb-4 text-muted">Showing {products.length} results</div>
-          
-          <div className="row g-4">
-            {products.map((product) => (
-              <div className="col-sm-6 col-lg-4" key={product.id}>
-                <Link to={`/product/${product.id}`} className="text-decoration-none text-dark">
-                  <ProductCard product={{
-                    id: product.id,
-                    name: product.name,
-                    price: product.price,
-                    school: product.school?.name || product.school,
-                    category: product.category,
-                    image: product.imageUrl
-                  }} />
-                </Link>
-              </div>
-            ))}
+          <div className="mb-4 text-muted d-flex justify-content-between align-items-center">
+            <span>Showing {products.length} of {totalItems} results</span>
+            <span className="small">Page {page + 1} of {totalPages}</span>
           </div>
+          
+          <div className="row g-4 mb-5">
+            {products.length > 0 ? (
+              products.map((product) => (
+                <div className="col-sm-6 col-lg-4" key={product.id}>
+                  <Link to={`/product/${product.id}`} className="text-decoration-none text-dark">
+                    <ProductCard product={{
+                      id: product.id,
+                      name: product.name,
+                      price: product.price,
+                      school: product.school?.name || product.school,
+                      category: product.category,
+                      image: product.imageUrl
+                    }} />
+                  </Link>
+                </div>
+              ))
+            ) : (
+              <div className="col-12 text-center py-5">
+                <p className="text-muted">No products found matching your filters.</p>
+              </div>
+            )}
+          </div>
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="d-flex justify-content-center gap-2 mt-4">
+              <button 
+                className="btn btn-outline-dark px-4" 
+                disabled={page === 0}
+                onClick={() => setPage(p => p - 1)}
+              >
+                Previous
+              </button>
+              <div className="d-flex align-items-center px-3 border rounded fw-medium">
+                {page + 1}
+              </div>
+              <button 
+                className="btn btn-outline-dark px-4" 
+                disabled={page >= totalPages - 1}
+                onClick={() => setPage(p => p + 1)}
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
