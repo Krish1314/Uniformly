@@ -19,10 +19,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @EntityGraph(attributePaths = {"school", "category", "variants"})
     List<Product> findTop4BySchoolIdAndActiveTrueAndIdNot(Long schoolId, Long id);
 
+    @EntityGraph(attributePaths = {"school", "category"})
     @Query("""
             select p from Product p
-            join fetch p.school
-            join fetch p.category
             where p.active = true
             and (:search is null or lower(p.name) like lower(concat('%', :search, '%')))
             and (:schoolId is null or p.school.id = :schoolId)
