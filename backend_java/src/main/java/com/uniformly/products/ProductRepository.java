@@ -27,17 +27,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             and (:search is null or lower(p.name) like lower(concat('%', :search, '%')))
             and (:schoolId is null or p.school.id = :schoolId)
             and (:category is null or lower(p.category.slug) = lower(:category) or lower(p.category.name) = lower(:category))
-            and (:sort is null or :sort = 'price_asc' or :sort = 'price_desc' or :sort = 'newest')
-            order by 
-                case when :sort = 'price_asc' then p.price end asc,
-                case when :sort = 'price_desc' then p.price end desc,
-                p.createdAt desc
             """)
-    List<Product> search(
+    org.springframework.data.domain.Page<Product> search(
             @Param("search") String search,
             @Param("schoolId") Long schoolId,
             @Param("category") String category,
-            @Param("sort") String sort
+            org.springframework.data.domain.Pageable pageable
     );
 
     @Query("""
