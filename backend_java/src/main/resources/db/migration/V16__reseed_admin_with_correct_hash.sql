@@ -1,11 +1,13 @@
--- Delete existing admin to ensure fresh state
-DELETE FROM users WHERE email = 'admin@uniformly.in';
+-- Update admin user with verified hash (avoid DELETE to prevent FK violations)
+UPDATE users 
+SET password_hash = '$2a$10$EblZqNptyYvcLm/VwDCVAuBjzZOAK9S8x6H8T5WPS6kR4VqH6B2C6',
+    role = 'ADMIN',
+    updated_at = CURRENT_TIMESTAMP
+WHERE email = 'admin@uniformly.in';
 
--- Re-insert with verified 'admin123' BCrypt hash
-INSERT INTO users (first_name, last_name, email, phone, password_hash, role)
-VALUES ('Admin', 'User', 'admin@uniformly.in', '+910000000000', '$2a$10$EblZqNptyYvcLm/VwDCVAuBjzZOAK9S8x6H8T5WPS6kR4VqH6B2C6', 'ADMIN');
+-- Update test user
+UPDATE users 
+SET password_hash = '$2a$10$EblZqNptyYvcLm/VwDCVAuBjzZOAK9S8x6H8T5WPS6kR4VqH6B2C6',
+    updated_at = CURRENT_TIMESTAMP
+WHERE email = 'abc@gmail.com';
 
--- Also fix the test user
-DELETE FROM users WHERE email = 'abc@gmail.com';
-INSERT INTO users (first_name, last_name, email, phone, password_hash, role)
-VALUES ('Test', 'User', 'abc@gmail.com', '+910000000001', '$2a$10$EblZqNptyYvcLm/VwDCVAuBjzZOAK9S8x6H8T5WPS6kR4VqH6B2C6', 'CUSTOMER');

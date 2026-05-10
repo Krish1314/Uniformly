@@ -23,16 +23,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = """
             select p from Product p
             where p.active = true
-            and (:search is null or lower(p.name) like lower(concat('%', :search, '%')))
+            and (:search is null or lower(p.name) like lower(concat('%', cast(:search as string), '%')))
             and (:schoolId is null or p.school.id = :schoolId)
-            and (:category is null or lower(p.category.slug) = lower(:category) or lower(p.category.name) = lower(:category))
-            """,
-            countQuery = """
-            select count(p) from Product p
-            where p.active = true
-            and (:search is null or lower(p.name) like lower(concat('%', :search, '%')))
-            and (:schoolId is null or p.school.id = :schoolId)
-            and (:category is null or lower(p.category.slug) = lower(:category) or lower(p.category.name) = lower(:category))
+            and (:category is null or lower(p.category.slug) = lower(cast(:category as string)) or lower(p.category.name) = lower(cast(:category as string)))
             """)
     org.springframework.data.domain.Page<Product> search(
             @Param("search") String search,
