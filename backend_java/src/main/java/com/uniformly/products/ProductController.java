@@ -15,7 +15,7 @@ public class ProductController {
     }
 
     @GetMapping
-    @org.springframework.cache.annotation.Cacheable(value = "products", key = "{#search, #schoolId, #category, #sort, #page, #size}")
+    @org.springframework.cache.annotation.Cacheable(value = "products_v2", key = "{#search, #schoolId, #category, #sort, #page, #size}")
     public org.springframework.http.ResponseEntity<java.util.Map<String, Object>> getProducts(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) Long schoolId,
