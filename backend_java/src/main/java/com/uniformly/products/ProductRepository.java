@@ -19,7 +19,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @EntityGraph(attributePaths = {"school", "category", "variants"})
     List<Product> findTop4BySchoolIdAndActiveTrueAndIdNot(Long schoolId, Long id);
 
-    @EntityGraph(attributePaths = {"school", "category"})
+    @EntityGraph(attributePaths = {"school", "category", "variants"})
     @Query(value = """
             select p from Product p
             where p.active = true
