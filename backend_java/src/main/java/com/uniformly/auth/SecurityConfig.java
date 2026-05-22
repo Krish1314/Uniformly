@@ -18,6 +18,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
+@org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
@@ -39,10 +40,12 @@ public class SecurityConfig {
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/products")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/schools/**")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/schools")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/categories/**")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/categories")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/error")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/error/**")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/uploads/**")).permitAll()
-                        .requestMatchers(AntPathRequestMatcher.antMatcher("/api/upload")).authenticated()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/api/upload")).hasRole("ADMIN")
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/admin/**")).hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
@@ -51,7 +54,14 @@ public class SecurityConfig {
                 )
                 .headers(headers -> headers
                         .frameOptions(frame -> frame.deny())
-                        .contentSecurityPolicy(csp -> csp.policyDirectives("default-src 'self'; script-src 'self'; object-src 'none';"))
+                        .contentSecurityPolicy(csp -> csp.policyDirectives(
+                                "default-src 'self'; " +
+                                "script-src 'self' https://accounts.google.com; " +
+                                "frame-src https://accounts.google.com; " +
+                                "img-src 'self' https://*.googleusercontent.com data:; " +
+                                "connect-src 'self' https://accounts.google.com; " +
+                                "object-src 'none';"
+                        ))
                         .httpStrictTransportSecurity(hsts -> hsts
                                 .includeSubDomains(true)
                                 .maxAgeInSeconds(31536000))

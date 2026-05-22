@@ -34,10 +34,15 @@ const AdminOrders = () => {
 
   const updateStatus = (id, status) => {
     adminApi.updateOrderStatus(id, status)
-      .then(() => {
-        fetchOrders();
-      })
-      .catch((err) => console.error("Failed to update status", err));
+      .then(() => fetchOrders())
+      .catch((err) => console.error('Failed to update status', err));
+  };
+
+  const confirmPayment = (id) => {
+    if (!window.confirm('Mark this order as PAID? This cannot be undone.')) return;
+    adminApi.confirmOrderPayment(id)
+      .then(() => fetchOrders())
+      .catch((err) => console.error('Failed to confirm payment', err));
   };
 
   const formatTimestamp = (value) => {
@@ -167,6 +172,7 @@ const AdminOrders = () => {
                 <th>Date</th>
                 <th>Customer</th>
                 <th>Payment</th>
+                <th>Pay Status</th>
                 <th>Total</th>
                 <th>Status</th>
                 <th>Action</th>
@@ -182,7 +188,20 @@ const AdminOrders = () => {
                     <strong>{order.customerName || "N/A"}</strong>
                     <p>{order.customerEmail || ""}</p>
                   </td>
-                  <td><span className="payment-pill">{order.paymentMethod || "N/A"}</span></td>
+                  <td><span className="payment-pill">{order.paymentMethod || 'N/A'}</span></td>
+                  <td>
+                    <span style={{
+                      display: 'inline-block',
+                      padding: '3px 9px',
+                      borderRadius: '5px',
+                      fontSize: '12px',
+                      fontWeight: 800,
+                      background: order.paymentStatus === 'PAID' ? '#d1fae5' : '#fef3c7',
+                      color: order.paymentStatus === 'PAID' ? '#065f46' : '#92400e',
+                    }}>
+                      {order.paymentStatus || 'PENDING'}
+                    </span>
+                  </td>
                   <td>
                     <strong>
                       ₹{Number(order.totalAmount || 0).toLocaleString()}
@@ -193,7 +212,7 @@ const AdminOrders = () => {
                       {order.status}
                     </span>
                   </td>
-                  <td>
+                  <td className="row-actions">
                     <select
                       className="status-select"
                       value={order.status}
@@ -203,6 +222,15 @@ const AdminOrders = () => {
                         <option key={status} value={status}>{status}</option>
                       ))}
                     </select>
+                    {order.paymentStatus !== 'PAID' && (
+                      <button
+                        style={{ marginLeft: '8px', background: '#065f46', color: 'white', border: 'none', borderRadius: '5px', padding: '5px 10px', fontSize: '12px', fontWeight: 700, cursor: 'pointer' }}
+                        onClick={() => confirmPayment(order.id)}
+                        title="Mark payment as received (COD / manual confirmation)"
+                      >
+                        ✓ Confirm Payment
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}

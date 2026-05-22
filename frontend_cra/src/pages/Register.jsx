@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Footer from '../components/Footer';
 
 const Register = () => {
   const navigate = useNavigate();
-  const { register } = useAuth();
+  const { register, loginWithGoogle } = useAuth();
 
   const [form, setForm] = useState({
     firstName: '',
@@ -33,6 +33,31 @@ const Register = () => {
       navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
+    }
+  };
+
+  useEffect(() => {
+    /* global google */
+    if (window.google) {
+      window.google.accounts.id.initialize({
+        client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+        callback: handleGoogleLoginCallback,
+      });
+      window.google.accounts.id.renderButton(
+        document.getElementById("googleSignInDiv"),
+        { theme: "outline", size: "large", width: "100%", shape: "rectangular" }
+      );
+    }
+  }, []);
+
+  const handleGoogleLoginCallback = async (response) => {
+    setError('');
+    try {
+      await loginWithGoogle(response.credential);
+      // Registration via Google always lands on the homepage — admin access is via /login only
+      navigate('/');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Google login failed');
     }
   };
 
@@ -115,6 +140,14 @@ const Register = () => {
             <button type="submit" className="btn-primary-blue w-100 mb-3">
               Create account
             </button>
+
+            <div className="d-flex align-items-center my-3">
+              <hr className="flex-grow-1 text-muted m-0" />
+              <span className="mx-3 text-muted" style={{ fontSize: '0.85rem', fontWeight: 500 }}>or</span>
+              <hr className="flex-grow-1 text-muted m-0" />
+            </div>
+
+            <div id="googleSignInDiv" className="w-100 mb-4" style={{ minHeight: '40px' }}></div>
             
             <div className="text-center text-muted" style={{ fontSize: '0.85rem' }}>
               Already Have An Account ? <Link to="/login" className="text-decoration-none fw-medium" style={{ color: '#0d6efd' }}>Log In</Link>

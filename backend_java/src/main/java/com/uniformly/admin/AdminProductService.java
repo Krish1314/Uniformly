@@ -4,6 +4,7 @@ import com.uniformly.common.NotFoundException;
 import com.uniformly.products.*;
 import com.uniformly.schools.School;
 import com.uniformly.schools.SchoolRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -85,7 +86,7 @@ public class AdminProductService {
                         saved,
                         size.trim(),
                         color.trim(),
-                        buildSku(saved.getName(), size, color),
+                        buildSku(saved.getId(), saved.getName(), size, color),
                         request.stockQuantity()
                 );
 
@@ -146,6 +147,74 @@ public class AdminProductService {
         productRepository.save(product);
     }
 
+    /** Returns all variants for a product with their current stock. */
+    @Transactional
+    public List<AdminVariantStockResponse> getVariantStock(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException("Product not found"));
+        return product.getVariants().stream()
+                .map(v -> new AdminVariantStockResponse(
+                        v.getId(), v.getSize(), v.getColor(), v.getSku(), v.getStockQuantity()))
+                .sorted(java.util.Comparator
+                        .comparing(AdminVariantStockResponse::size)
+                        .thenComparing(AdminVariantStockResponse::color))
+                .toList();
+    }
+
+    /** Sets the stock quantity for a specific variant (restock or correction). */
+    @Transactional
+    public AdminVariantStockResponse updateVariantStock(Long productId, Long variantId, int newQty) {
+        if (newQty < 0) throw new IllegalArgumentException("Stock quantity cannot be negative");
+
+        // Verify variant belongs to this product
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException("Product not found"));
+        ProductVariant variant = product.getVariants().stream()
+                .filter(v -> v.getId().equals(variantId))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Variant not found for this product"));
+
+        variant.setStockQuantity(newQty);
+        variantRepository.save(variant);
+
+        return new AdminVariantStockResponse(
+                variant.getId(), variant.getSize(), variant.getColor(),
+                variant.getSku(), variant.getStockQuantity());
+    }
+
+    @Transactional
+    public List<AdminVariantStockResponse> initializeVariants(Long productId, List<String> sizes, List<String> colors, int initialStock) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException("Product not found"));
+
+        if (!product.getVariants().isEmpty()) {
+            throw new IllegalStateException("Product already has variants configured");
+        }
+
+        for (String size : sizes) {
+            for (String color : colors) {
+                if (size.isBlank() || color.isBlank()) continue;
+                ProductVariant variant = new ProductVariant(
+                        product,
+                        size.trim(),
+                        color.trim(),
+                        buildSku(product.getId(), product.getName(), size, color),
+                        initialStock
+                );
+                variantRepository.save(variant);
+                product.getVariants().add(variant);
+            }
+        }
+
+        return product.getVariants().stream()
+                .map(v -> new AdminVariantStockResponse(
+                        v.getId(), v.getSize(), v.getColor(), v.getSku(), v.getStockQuantity()))
+                .sorted(java.util.Comparator
+                        .comparing(AdminVariantStockResponse::size)
+                        .thenComparing(AdminVariantStockResponse::color))
+                .toList();
+    }
+
     private AdminProductResponse toResponse(Product product) {
         int stock = product.getVariants()
                 .stream()
@@ -165,9 +234,11 @@ public class AdminProductService {
         );
     }
 
-    private String buildSku(String name, String size, String color) {
+    private String buildSku(Long productId, String name, String size, String color) {
         return name.toUpperCase()
                 .replaceAll("[^A-Z0-9]+", "-")
+                + "-"
+                + productId
                 + "-"
                 + color.toUpperCase()
                 + "-"

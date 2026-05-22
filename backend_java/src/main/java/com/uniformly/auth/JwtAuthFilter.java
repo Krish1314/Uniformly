@@ -1,5 +1,6 @@
 package com.uniformly.auth;
 
+import com.uniformly.users.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,9 +19,11 @@ import java.util.List;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+    private final UserRepository userRepository;
 
-    public JwtAuthFilter(JwtService jwtService) {
+    public JwtAuthFilter(JwtService jwtService, UserRepository userRepository) {
         this.jwtService = jwtService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -30,36 +33,44 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String userIdStr;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        jwt = authHeader.substring(7);
+        final String jwt = authHeader.substring(7);
         try {
-            userIdStr = jwtService.extractUserId(jwt);
+            String userIdStr = jwtService.extractUserId(jwt);
             if (userIdStr != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 Long userId = Long.parseLong(userIdStr);
-                
+
                 if (jwtService.isTokenValid(jwt, userId)) {
-                    String role = jwtService.extractRole(jwt);
-                    org.springframework.security.core.GrantedAuthority authority = 
-                            new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_" + (role != null ? role.toUpperCase() : "CUSTOMER"));
-                    
+                    String jwtRole = jwtService.extractRole(jwt);
+                    String effectiveRole;
+
+                    // P1-A: For ADMIN tokens, always verify the role against the live DB.
+                    // This prevents stale/forged tokens from retaining admin privileges after demotion.
+                    if ("ADMIN".equalsIgnoreCase(jwtRole)) {
+                        effectiveRole = userRepository.findById(userId)
+                                .map(u -> "ADMIN".equalsIgnoreCase(u.getRole()) ? "ADMIN" : "CUSTOMER")
+                                .orElse("CUSTOMER");
+                    } else {
+                        effectiveRole = (jwtRole != null) ? jwtRole.toUpperCase() : "CUSTOMER";
+                    }
+
+                    org.springframework.security.core.GrantedAuthority authority =
+                            new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_" + effectiveRole);
+
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            userId,
-                            null,
-                            List.of(authority)
+                            userId, null, List.of(authority)
                     );
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
         } catch (Exception e) {
-            // Token parsing failed, ignore and let Security handle unauthorized
+            // Token parsing failed — let SecurityFilterChain return 401/403
         }
 
         filterChain.doFilter(request, response);

@@ -48,6 +48,12 @@ public class Order extends BaseEntity {
     @Column(name = "order_status", nullable = false)
     private String orderStatus;
 
+    @Column(name = "razorpay_order_id")
+    private String razorpayOrderId;
+
+    @Column(name = "razorpay_payment_id")
+    private String razorpayPaymentId;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> items = new ArrayList<>();
 
@@ -63,7 +69,7 @@ public class Order extends BaseEntity {
         this.gstAmount = gstAmount;
         this.totalAmount = totalAmount;
         this.paymentMethod = paymentMethod;
-        this.paymentStatus = "PAID";
+        this.paymentStatus = "PENDING";
         this.orderStatus = "PLACED";
     }
 
@@ -117,6 +123,26 @@ public class Order extends BaseEntity {
 
     public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public String getRazorpayOrderId() {
+        return razorpayOrderId;
+    }
+
+    public void setRazorpayOrderId(String razorpayOrderId) {
+        this.razorpayOrderId = razorpayOrderId;
+    }
+
+    public String getRazorpayPaymentId() {
+        return razorpayPaymentId;
+    }
+
+    public void setRazorpayPaymentId(String razorpayPaymentId) {
+        this.razorpayPaymentId = razorpayPaymentId;
     }
 
     public List<OrderItem> getItems() {

@@ -21,11 +21,14 @@ public class User extends BaseEntity {
 
     private String phone;
 
-    @Column(name = "password_hash", nullable = false)
+    @Column(name = "password_hash")
     private String passwordHash;
 
     @Column(nullable = false)
     private String role = "CUSTOMER";
+
+    @Column(name = "google_sub", unique = true)
+    private String googleSub;
 
     protected User() {
     }
@@ -36,6 +39,15 @@ public class User extends BaseEntity {
         this.email = email;
         this.phone = phone;
         this.passwordHash = passwordHash;
+    }
+
+    public User(String firstName, String lastName, String email, String phone, String passwordHash, String googleSub) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.passwordHash = passwordHash;
+        this.googleSub = googleSub;
     }
 
     public Long getId() {
@@ -78,7 +90,23 @@ public class User extends BaseEntity {
         return passwordHash;
     }
 
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
     public String getRole() {
         return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getGoogleSub() {
+        return googleSub;
+    }
+
+    public void setGoogleSub(String googleSub) {
+        this.googleSub = googleSub;
     }
 }

@@ -39,4 +39,14 @@ public class Payment {
         this.amount = amount;
         this.status = status;
     }
+
+    public Long getId() { return id; }
+    public Order getOrder() { return order; }
+    public String getProvider() { return provider; }
+    public String getProviderPaymentId() { return providerPaymentId; }
+    public BigDecimal getAmount() { return amount; }
+    public String getStatus() { return status; }
+
+    public void setStatus(String status) { this.status = status; }
+    public void setProviderPaymentId(String providerPaymentId) { this.providerPaymentId = providerPaymentId; }
 }

@@ -20,6 +20,7 @@ import OrderConfirmation from './pages/OrderConfirmation';
 import Profile from './pages/Profile';
 import Address from './pages/Address';
 import MyOrders from './pages/MyOrders';
+import OrderDetail from './pages/OrderDetail';
 import SizeGuide from './pages/SizeGuide';
 
 import AdminDashboard from './admin/AdminDashboard';
@@ -46,7 +47,7 @@ function App() {
             <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
             <Route path="/confirmation" element={<ProtectedRoute><OrderConfirmation /></ProtectedRoute>} />
             <Route path="/orders" element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
-            <Route path="/orders/:id" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+            <Route path="/orders/:id" element={<ProtectedRoute><OrderDetail /></ProtectedRoute>} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />

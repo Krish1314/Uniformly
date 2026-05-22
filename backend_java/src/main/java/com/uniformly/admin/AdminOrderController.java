@@ -6,7 +6,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/admin/orders")
-@CrossOrigin(origins = "*")
 public class AdminOrderController {
 
     private final AdminOrderService adminOrderService;
@@ -29,5 +28,10 @@ public class AdminOrderController {
             @RequestBody UpdateOrderStatusRequest request
     ) {
         return adminOrderService.updateStatus(id, request.status());
+    }
+
+    @PatchMapping("/{id}/payment")
+    public AdminOrderResponse confirmPayment(@PathVariable Long id) {
+        return adminOrderService.confirmPayment(id);
     }
 }

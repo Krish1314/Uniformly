@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/uniformly_db}
+    username: ${SPRING_DATASOURCE_USERNAME:krishpatel}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
     hikari:
       max-lifetime: 540000
       keepalive-time: 30000
@@ -15,7 +15,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: true
+    show-sql: false
 
   flyway:
     enabled: true
@@ -37,3 +37,10 @@ application:
     jwt:
       secret-key: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
       expiration: 86400000 # a day
+    google:
+      client-id: ${GOOGLE_CLIENT_ID:594139161111-414eqelqkfc9bt525q7tr4ene65kot8r.apps.googleusercontent.com}
+    admin:
+      emails: ${ADMIN_EMAILS:krish09755650065@gmail.com}
+    razorpay:
+      key-id: ${RAZORPAY_KEY_ID:rzp_test_SsVr0x1z5NgJpc}
+      key-secret: ${RAZORPAY_KEY_SECRET:4i3zVllHs717A9rGpHnsSV84}

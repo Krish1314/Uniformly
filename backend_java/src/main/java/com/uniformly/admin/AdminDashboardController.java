@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/admin/dashboard")
-@CrossOrigin(origins = "*")
 public class AdminDashboardController {
 
     private final AdminDashboardService dashboardService;

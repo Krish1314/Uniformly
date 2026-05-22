@@ -6,6 +6,7 @@ import com.uniformly.orders.OrderItem;
 import com.uniformly.orders.OrderRepository;
 import com.uniformly.orders.OrderStatusHistory;
 import com.uniformly.orders.OrderStatusHistoryRepository;
+import com.uniformly.orders.PaymentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,13 +17,16 @@ public class AdminOrderService {
 
     private final OrderRepository orderRepository;
     private final OrderStatusHistoryRepository statusHistoryRepository;
+    private final PaymentRepository paymentRepository;
 
     public AdminOrderService(
             OrderRepository orderRepository,
-            OrderStatusHistoryRepository statusHistoryRepository
+            OrderStatusHistoryRepository statusHistoryRepository,
+            PaymentRepository paymentRepository
     ) {
         this.orderRepository = orderRepository;
         this.statusHistoryRepository = statusHistoryRepository;
+        this.paymentRepository = paymentRepository;
     }
 
     @Transactional(readOnly = true)
@@ -45,6 +49,22 @@ public class AdminOrderService {
         statusHistoryRepository.save(
                 new OrderStatusHistory(saved, status.toUpperCase(), "Updated by admin")
         );
+
+        return toResponse(saved);
+    }
+
+    @Transactional
+    public AdminOrderResponse confirmPayment(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundException("Order not found"));
+
+        order.setPaymentStatus("PAID");
+        Order saved = orderRepository.save(order);
+
+        paymentRepository.findByOrderId(orderId).ifPresent(p -> {
+            p.setStatus("PAID");
+            paymentRepository.save(p);
+        });
 
         return toResponse(saved);
     }

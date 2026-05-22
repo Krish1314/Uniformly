@@ -30,8 +30,8 @@ public class RateLimitingFilter extends OncePerRequestFilter {
 
         String path = request.getRequestURI();
         
-        // Only rate-limit login and register endpoints
-        if (path.contains("/api/v1/auth/login") || path.contains("/api/v1/auth/register")) {
+        // Only rate-limit login, register and google oauth endpoints
+        if (path.contains("/api/v1/auth/login") || path.contains("/api/v1/auth/register") || path.contains("/api/v1/auth/google")) {
             String clientIp = request.getRemoteAddr();
             
             if (isRateLimited(clientIp)) {

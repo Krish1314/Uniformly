@@ -28,4 +28,9 @@ public class ApiExceptionHandler {
                 .orElse("Invalid request");
         return ResponseEntity.badRequest().body(Map.of("message", message));
     }
+    @ExceptionHandler(IllegalStateException.class)
+    ResponseEntity<Map<String, String>> handleInternalError(IllegalStateException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("message", "An internal error occurred. Please try again."));
+    }
 }

@@ -1,11 +1,19 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "./Admin.css";
 
 const AdminLayout = ({ title, children, actions }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const isActive = (path) => location.pathname === path;
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
     <div className="admin-shell">
@@ -39,9 +47,14 @@ const AdminLayout = ({ title, children, actions }) => {
           </Link>
         </nav>
 
-        <Link className="back-store" to="/">
-          ← Back to Store
-        </Link>
+        <div className="admin-sidebar-footer">
+          <Link className="back-store" to="/">
+            ← Back to Store
+          </Link>
+          <button className="admin-logout-btn" onClick={handleLogout}>
+            <span>⏻</span> Log Out
+          </button>
+        </div>
       </aside>
 
       <main className="admin-main">
@@ -57,3 +70,4 @@ const AdminLayout = ({ title, children, actions }) => {
 };
 
 export default AdminLayout;
+

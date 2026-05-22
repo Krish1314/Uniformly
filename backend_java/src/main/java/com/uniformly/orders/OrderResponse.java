@@ -53,8 +53,18 @@ public record OrderResponse(
         }
     }
 
-    public record OrderItemView(String productName, String schoolName, String size, String color, int quantity, BigDecimal unitPrice, BigDecimal totalPrice) {
+    public record OrderItemView(
+            String productName,
+            String schoolName,
+            String size,
+            String color,
+            int quantity,
+            BigDecimal unitPrice,
+            BigDecimal totalPrice,
+            String imageUrl
+    ) {
         static OrderItemView from(OrderItem item) {
+            String img = (item.getProduct() != null) ? item.getProduct().getImageUrl() : null;
             return new OrderItemView(
                     item.getProductName(),
                     item.getSchoolName(),
@@ -62,7 +72,8 @@ public record OrderResponse(
                     item.getColor(),
                     item.getQuantity(),
                     item.getUnitPrice(),
-                    item.getTotalPrice()
+                    item.getTotalPrice(),
+                    img
             );
         }
     }

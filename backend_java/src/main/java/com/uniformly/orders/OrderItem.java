@@ -93,4 +93,12 @@ public class OrderItem {
     public BigDecimal getTotalPrice() {
         return totalPrice;
     }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public ProductVariant getVariant() {
+        return variant;
+    }
 }

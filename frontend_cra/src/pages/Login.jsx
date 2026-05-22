@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { authApi } from '../api/authApi';
 import Footer from '../components/Footer';
@@ -7,7 +7,7 @@ import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, loginWithGoogle } = useAuth();
 
   const [form, setForm] = useState({
     email: '',
@@ -37,6 +37,34 @@ const Login = () => {
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
+    }
+  };
+
+  useEffect(() => {
+    /* global google */
+    if (window.google) {
+      window.google.accounts.id.initialize({
+        client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+        callback: handleGoogleLoginCallback,
+      });
+      window.google.accounts.id.renderButton(
+        document.getElementById("googleSignInDiv"),
+        { theme: "outline", size: "large", width: "100%", shape: "rectangular" }
+      );
+    }
+  }, []);
+
+  const handleGoogleLoginCallback = async (response) => {
+    setError('');
+    try {
+      const data = await loginWithGoogle(response.credential);
+      if (data.user && data.user.role === 'ADMIN') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Google login failed');
     }
   };
 
@@ -104,6 +132,14 @@ const Login = () => {
             <button type="submit" className="btn-primary-blue w-100 mb-4">
               Login now
             </button>
+
+            <div className="d-flex align-items-center my-3">
+              <hr className="flex-grow-1 text-muted m-0" />
+              <span className="mx-3 text-muted" style={{ fontSize: '0.85rem', fontWeight: 500 }}>or</span>
+              <hr className="flex-grow-1 text-muted m-0" />
+            </div>
+
+            <div id="googleSignInDiv" className="w-100 mb-4" style={{ minHeight: '40px' }}></div>
             
             <div className="text-center text-muted" style={{ fontSize: '0.85rem' }}>
               Don't Have An Account? <Link to="/register" className="text-decoration-none fw-medium" style={{ color: '#0d6efd' }}>Sign Up</Link>
