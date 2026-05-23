@@ -83,12 +83,35 @@ const ProductDetails = () => {
     ? [...new Set(product.variants.map(v => v.color))] 
     : ['Navy', 'Default'];
 
+  const getVariantStockForSize = (s) => {
+    if (!product || !product.variants || product.variants.length === 0) return 999;
+    const match = product.variants.find(v => v.size === s && v.color === color);
+    return match ? match.stockQuantity : 0;
+  };
+
+  const selectedVariant = product?.variants?.find(v => v.size === size && v.color === color);
+  const currentStock = selectedVariant ? selectedVariant.stockQuantity : 0;
+
   useEffect(() => {
-    if (product) {
-      if (sizes.length > 0 && !size) setSize(sizes[0]);
-      if (colors.length > 0 && !color) setColor(colors[0]);
+    if (product && sizes.length > 0) {
+      if (!size) {
+        setSize(sizes[0]);
+      } else if (product.variants && product.variants.length > 0) {
+        // If current size is out of stock in selected color, auto-select first in-stock size
+        const currentVariant = product.variants.find(v => v.size === size && v.color === color);
+        if (!currentVariant || currentVariant.stockQuantity === 0) {
+          const available = product.variants.find(v => v.color === color && v.stockQuantity > 0);
+          if (available) setSize(available.size);
+        }
+      }
     }
-  }, [product, sizes, colors]);
+  }, [product, color, sizes, size]);
+
+  useEffect(() => {
+    if (product && colors.length > 0 && !color) {
+      setColor(colors[0]);
+    }
+  }, [product, colors, color]);
 
   if (!product) return <div className="container py-5 mt-4 text-center">Loading...</div>;
 
@@ -137,17 +160,41 @@ const ProductDetails = () => {
                 )}
               </div>
               <div className="d-flex flex-wrap">
-                {sizes.map(s => (
-                  <div 
-                    key={s} 
-                    className={`pill-selector ${size === s ? 'active' : ''}`}
-                    onClick={() => setSize(s)}
-                  >
-                    {s}
-                  </div>
-                ))}
+                {sizes.map(s => {
+                  const stock = getVariantStockForSize(s);
+                  const isOos = stock === 0;
+                  return (
+                    <div 
+                      key={s} 
+                      className={`pill-selector ${size === s ? 'active' : ''} ${isOos ? 'disabled' : ''}`}
+                      onClick={() => { if (!isOos) setSize(s); }}
+                      style={isOos ? {
+                        opacity: 0.4,
+                        cursor: 'not-allowed',
+                        textDecoration: 'line-through',
+                        backgroundColor: '#f3f4f6',
+                        borderColor: '#e5e7eb',
+                        color: '#9ca3af'
+                      } : undefined}
+                    >
+                      {s}
+                    </div>
+                  );
+                })}
               </div>
             </div>
+
+            {size && currentStock > 0 && currentStock < 10 && (
+              <div style={{
+                background: '#fffbeb', border: '1px solid #fef3c7', borderRadius: '10px',
+                padding: '12px 16px', fontSize: '0.85rem', color: '#b45309', fontWeight: 700,
+                display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '24px',
+                width: '100%', boxSizing: 'border-box'
+              }}>
+                <span style={{ fontSize: '1.1rem', animation: 'lowStockPulse 1.5s infinite', display: 'inline-block' }}>⚡</span>
+                <span>Only <strong>{currentStock} left</strong>! Few stock left, buy soon.</span>
+              </div>
+            )}
 
             {/* Size Guide Modal */}
             {showSizeGuide && productCategory && (
@@ -218,7 +265,13 @@ const ProductDetails = () => {
           </div>
         </div>
       </div>
-      
+      <style>{`
+        @keyframes lowStockPulse {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.15); }
+          100% { transform: scale(1); }
+        }
+      `}</style>
       <Footer />
     </div>
   );

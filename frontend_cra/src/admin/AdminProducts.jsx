@@ -20,7 +20,21 @@ const RestockModal = ({ product, onClose, onSaved }) => {
   const [loadErr,    setLoadErr]    = useState(null);
   const [savedIds,   setSavedIds]   = useState(new Set());
 
-  const [initSizes, setInitSizes] = useState("S, M, L, XL");
+  const [initSizes, setInitSizes] = useState(["S", "M", "L", "XL"]);
+  const [newInitSize, setNewInitSize] = useState("");
+
+  const handleAddInitSize = () => {
+    const size = newInitSize.trim().toUpperCase();
+    if (size && !initSizes.includes(size)) {
+      setInitSizes(prev => [...prev, size]);
+    }
+    setNewInitSize("");
+  };
+
+  const handleRemoveInitSize = (sizeToRemove) => {
+    setInitSizes(prev => prev.filter(s => s !== sizeToRemove));
+  };
+
   const [initColors, setInitColors] = useState(() => {
     if (!product || !product.name) return "Maroon";
     const colors = ["Maroon", "Navy", "White", "Black", "Grey", "Blue", "Khaki", "Green", "Yellow", "Red"];
@@ -39,7 +53,7 @@ const RestockModal = ({ product, onClose, onSaved }) => {
     setInitializing(true);
     setInitErr(null);
     try {
-      const sizes = initSizes.split(',').map(s => s.trim()).filter(Boolean);
+      const sizes = initSizes;
       const colors = initColors.split(',').map(c => c.trim()).filter(Boolean);
       if (sizes.length === 0 || colors.length === 0) {
         throw new Error("Sizes and Colors are required to generate variants.");
@@ -222,27 +236,46 @@ const RestockModal = ({ product, onClose, onSaved }) => {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div>
                   <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: '#374151', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>
-                    Sizes <span style={{ color: '#9ca3af', fontWeight: 500 }}>(comma separated)</span>
+                    Sizes
                   </label>
-                  <input
-                    type="text"
-                    value={initSizes}
-                    onChange={e => setInitSizes(e.target.value)}
-                    placeholder="S, M, L, XL"
-                    style={{
-                      width: '100%',
-                      padding: '10px 14px',
-                      border: '1.5px solid #d1d5db',
-                      borderRadius: '10px',
-                      fontSize: '0.9rem',
-                      fontWeight: 600,
-                      outline: 'none',
-                      boxSizing: 'border-box',
-                      transition: 'border-color 0.2s',
-                    }}
-                    onFocus={e => e.target.style.borderColor = '#111'}
-                    onBlur={e => e.target.style.borderColor = '#d1d5db'}
-                  />
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '8px', minHeight: '32px', alignItems: 'center' }}>
+                    {initSizes.length === 0 ? (
+                      <span style={{ fontSize: '0.8rem', color: '#9ca3af', fontStyle: 'italic' }}>No sizes added yet</span>
+                    ) : (
+                      initSizes.map(s => (
+                        <span key={s} style={{
+                          display: 'inline-flex', alignItems: 'center', gap: '4px',
+                          background: '#111', color: '#fff', padding: '4px 10px',
+                          borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600
+                        }}>
+                          {s}
+                          <button type="button" onClick={() => handleRemoveInitSize(s)} style={{
+                            background: 'none', border: 'none', color: '#fca5a5',
+                            padding: 0, fontSize: '0.9rem', cursor: 'pointer', display: 'flex', alignItems: 'center'
+                          }}>×</button>
+                        </span>
+                      ))
+                    )}
+                  </div>
+                  <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
+                    <input
+                      type="text"
+                      placeholder="e.g. XXL"
+                      value={newInitSize}
+                      onChange={e => setNewInitSize(e.target.value.toUpperCase())}
+                      onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); handleAddInitSize(); } }}
+                      style={{
+                        flex: 1, padding: '10px 14px', border: '1.5px solid #d1d5db',
+                        borderRadius: '10px', fontSize: '0.9rem', outline: 'none', boxSizing: 'border-box'
+                      }}
+                    />
+                    <button type="button" onClick={handleAddInitSize} style={{
+                      background: '#111', color: '#fff', border: 'none', borderRadius: '10px',
+                      padding: '10px 16px', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer'
+                    }}>
+                      + Add Size
+                    </button>
+                  </div>
                 </div>
 
                 <div>
@@ -488,6 +521,17 @@ const AdminProducts = () => {
     }
   };
 
+  const handleToggleFeatured = async (product) => {
+    try {
+      await adminApi.updateProduct(product.id, {
+        featured: !product.featured
+      });
+      fetchProducts();
+    } catch (err) {
+      alert("Failed to update featured status: " + (err.response?.data?.message || err.message));
+    }
+  };
+
   return (
     <AdminLayout
       title="Products"
@@ -518,6 +562,7 @@ const AdminProducts = () => {
                 <th>School</th>
                 <th>Category</th>
                 <th>Price</th>
+                <th>Featured</th>
                 <th>Total Stock</th>
                 <th></th>
               </tr>
@@ -545,6 +590,29 @@ const AdminProducts = () => {
                   <td>{product.school}</td>
                   <td><span className="category-pill">{product.category}</span></td>
                   <td><strong>₹{product.price?.toLocaleString()}</strong></td>
+                  <td>
+                    <button
+                      onClick={() => handleToggleFeatured(product)}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        fontSize: '1.4rem',
+                        cursor: 'pointer',
+                        color: product.featured ? '#eab308' : '#d1d5db',
+                        transition: 'transform 0.15s, color 0.15s',
+                        outline: 'none',
+                        padding: '4px 8px',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                      title={product.featured ? "Unfeature product" : "Feature product"}
+                      onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.2) rotate(15deg)'; }}
+                      onMouseLeave={e => { e.currentTarget.style.transform = 'none'; }}
+                    >
+                      {product.featured ? '★' : '☆'}
+                    </button>
+                  </td>
                   <td>
                     <StockBadge qty={product.stockQuantity} />
                   </td>
@@ -605,11 +673,30 @@ const ProductModal = ({ onClose, onSave }) => {
     name: "", schoolId: "1", categoryId: "1", price: "",
     compareAtPrice: "", imageUrl: "", description: "",
     featured: false, stockQuantity: 100,
-    sizes: "S, M, L, XL", colors: "Navy, White",
+    sizes: ["S", "M", "L", "XL"], colors: "Navy, White",
   });
+  const [newSize, setNewSize]         = useState("");
   const [imageFile, setImageFile]     = useState(null);
   const [imagePreview, setImagePreview] = useState("");
   const [saving, setSaving]           = useState(false);
+
+  const handleAddSize = () => {
+    const size = newSize.trim().toUpperCase();
+    if (size && !formData.sizes.includes(size)) {
+      setFormData(prev => ({
+        ...prev,
+        sizes: [...prev.sizes, size]
+      }));
+    }
+    setNewSize("");
+  };
+
+  const handleRemoveSize = (sizeToRemove) => {
+    setFormData(prev => ({
+      ...prev,
+      sizes: prev.sizes.filter(s => s !== sizeToRemove)
+    }));
+  };
 
   const handleChange = e => {
     const { name, value, type, checked } = e.target;
@@ -636,7 +723,7 @@ const ProductModal = ({ onClose, onSave }) => {
         price: parseFloat(formData.price),
         compareAtPrice: formData.compareAtPrice ? parseFloat(formData.compareAtPrice) : null,
         stockQuantity: parseInt(formData.stockQuantity),
-        sizes: formData.sizes.split(",").map(s => s.trim()).filter(Boolean),
+        sizes: formData.sizes,
         colors: formData.colors.split(",").map(c => c.trim()).filter(Boolean),
       });
       alert("Product created successfully!");
@@ -687,8 +774,45 @@ const ProductModal = ({ onClose, onSave }) => {
             <input name="imageUrl" value={formData.imageUrl} onChange={handleChange} placeholder="Auto-filled after upload, or paste URL" />
           </div>
           <div>
-            <label>Sizes (comma separated)</label>
-            <input name="sizes" value={formData.sizes} onChange={handleChange} placeholder="S, M, L, XL" />
+            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#374151', marginBottom: '8px' }}>Sizes</label>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '8px', minHeight: '32px', alignItems: 'center' }}>
+              {formData.sizes.length === 0 ? (
+                <span style={{ fontSize: '0.8rem', color: '#9ca3af', fontStyle: 'italic' }}>No sizes added yet</span>
+              ) : (
+                formData.sizes.map(s => (
+                  <span key={s} style={{
+                    display: 'inline-flex', alignItems: 'center', gap: '4px',
+                    background: '#111', color: '#fff', padding: '4px 10px',
+                    borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600
+                  }}>
+                    {s}
+                    <button type="button" onClick={() => handleRemoveSize(s)} style={{
+                      background: 'none', border: 'none', color: '#fca5a5',
+                      padding: 0, fontSize: '0.9rem', cursor: 'pointer', display: 'flex', alignItems: 'center'
+                    }}>×</button>
+                  </span>
+                ))
+              )}
+            </div>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <input
+                type="text"
+                placeholder="e.g. XXL"
+                value={newSize}
+                onChange={e => setNewSize(e.target.value.toUpperCase())}
+                onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); handleAddSize(); } }}
+                style={{
+                  flex: 1, padding: '8px 12px', border: '1.5px solid #d1d5db',
+                  borderRadius: '8px', fontSize: '0.85rem', outline: 'none', boxSizing: 'border-box'
+                }}
+              />
+              <button type="button" onClick={handleAddSize} style={{
+                background: '#111', color: '#fff', border: 'none', borderRadius: '8px',
+                padding: '8px 14px', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer'
+              }}>
+                + Add Size
+              </button>
+            </div>
           </div>
           <div>
             <label>Colors (comma separated)</label>

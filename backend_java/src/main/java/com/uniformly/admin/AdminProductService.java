@@ -60,6 +60,7 @@ public class AdminProductService {
                 .toList();
     }
 
+    @org.springframework.cache.annotation.CacheEvict(value = {"products_v2", "featuredProducts"}, allEntries = true)
     public AdminProductResponse createProduct(AdminProductRequest request) {
         School school = schoolRepository.findById(request.schoolId())
                 .orElseThrow(() -> new NotFoundException("School not found"));
@@ -117,28 +118,34 @@ public class AdminProductService {
         }
     }
 
+    @org.springframework.cache.annotation.CacheEvict(value = {"products_v2", "featuredProducts", "productDetails"}, allEntries = true)
     public AdminProductResponse updateProduct(Long id, AdminProductRequest request) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Product not found"));
 
-        School school = schoolRepository.findById(request.schoolId())
-                .orElseThrow(() -> new NotFoundException("School not found"));
+        if (request.schoolId() != null) {
+            School school = schoolRepository.findById(request.schoolId())
+                    .orElseThrow(() -> new NotFoundException("School not found"));
+            product.setSchool(school);
+        }
 
-        Category category = categoryRepository.findById(request.categoryId())
-                .orElseThrow(() -> new NotFoundException("Category not found"));
+        if (request.categoryId() != null) {
+            Category category = categoryRepository.findById(request.categoryId())
+                    .orElseThrow(() -> new NotFoundException("Category not found"));
+            product.setCategory(category);
+        }
 
-        product.setName(request.name());
-        product.setSchool(school);
-        product.setCategory(category);
-        product.setDescription(request.description());
-        product.setPrice(request.price());
-        product.setCompareAtPrice(request.compareAtPrice());
-        product.setImageUrl(request.imageUrl());
-        product.setFeatured(Boolean.TRUE.equals(request.featured()));
+        if (request.name() != null) product.setName(request.name());
+        if (request.description() != null) product.setDescription(request.description());
+        if (request.price() != null) product.setPrice(request.price());
+        if (request.compareAtPrice() != null) product.setCompareAtPrice(request.compareAtPrice());
+        if (request.imageUrl() != null) product.setImageUrl(request.imageUrl());
+        if (request.featured() != null) product.setFeatured(request.featured());
 
         return toResponse(productRepository.save(product));
     }
 
+    @org.springframework.cache.annotation.CacheEvict(value = {"products_v2", "featuredProducts", "productDetails"}, allEntries = true)
     public void deleteProduct(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Product not found"));
@@ -162,6 +169,7 @@ public class AdminProductService {
     }
 
     /** Sets the stock quantity for a specific variant (restock or correction). */
+    @org.springframework.cache.annotation.CacheEvict(value = {"products_v2", "productDetails"}, allEntries = true)
     @Transactional
     public AdminVariantStockResponse updateVariantStock(Long productId, Long variantId, int newQty) {
         if (newQty < 0) throw new IllegalArgumentException("Stock quantity cannot be negative");
@@ -182,6 +190,7 @@ public class AdminProductService {
                 variant.getSku(), variant.getStockQuantity());
     }
 
+    @org.springframework.cache.annotation.CacheEvict(value = {"products_v2", "productDetails"}, allEntries = true)
     @Transactional
     public List<AdminVariantStockResponse> initializeVariants(Long productId, List<String> sizes, List<String> colors, int initialStock) {
         Product product = productRepository.findById(productId)
