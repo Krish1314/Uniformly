@@ -9,6 +9,7 @@ public record AdminOrderResponse(
         LocalDateTime createdAt,
         String customerName,
         String customerEmail,
+        String customerUuid,
         String paymentMethod,
         String paymentStatus,
         BigDecimal subtotal,
@@ -19,5 +20,8 @@ public record AdminOrderResponse(
         String itemDetails,
         String deliveryAddress,
         String deliveryPhone,
-        String status
+        String status,
+        String transactionId,
+        String cancellationReason,
+        LocalDateTime cancelledAt
 ) {}

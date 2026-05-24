@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import Footer from '../components/Footer';
@@ -6,6 +6,14 @@ import { productApi } from '../api/productApi';
 
 const Dashboard = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
+  const sliderRef = useRef(null);
+
+  const scroll = (direction) => {
+    if (sliderRef.current) {
+      const scrollAmount = direction === 'left' ? -350 : 350;
+      sliderRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     const loadFeaturedProducts = async () => {
@@ -36,13 +44,80 @@ const Dashboard = () => {
         </div>
       </section>
 
-      {/* Featured Uniforms */}
-      <section className="container mb-5">
-        <h2 className="fw-bold fs-3 mb-4">Featured Uniforms</h2>
-        
-        <div className="row g-4">
+      {/* Featured Uniforms Slider */}
+      <section className="container mb-5" style={{ position: 'relative' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+          <h2 className="fw-bold fs-3" style={{ margin: 0 }}>Featured Uniforms</h2>
+          {featuredProducts.length > 4 && (
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button
+                onClick={() => scroll('left')}
+                style={{
+                  background: '#ffffff',
+                  border: '1.5px solid #e5e7eb',
+                  borderRadius: '50%',
+                  width: '40px',
+                  height: '40px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '1.1rem',
+                  color: '#111827',
+                  boxShadow: '0 4px 6px rgba(0,0,0,0.02)',
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#f9fafb'; e.currentTarget.style.transform = 'translateX(-2px)'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = '#ffffff'; e.currentTarget.style.transform = 'none'; }}
+              >
+                ←
+              </button>
+              <button
+                onClick={() => scroll('right')}
+                style={{
+                  background: '#ffffff',
+                  border: '1.5px solid #e5e7eb',
+                  borderRadius: '50%',
+                  width: '40px',
+                  height: '40px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '1.1rem',
+                  color: '#111827',
+                  boxShadow: '0 4px 6px rgba(0,0,0,0.02)',
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#f9fafb'; e.currentTarget.style.transform = 'translateX(2px)'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = '#ffffff'; e.currentTarget.style.transform = 'none'; }}
+              >
+                →
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div
+          ref={sliderRef}
+          className="featured-products-slider"
+          style={{
+            display: 'flex',
+            overflowX: 'auto',
+            scrollBehavior: 'smooth',
+            gap: '24px',
+            padding: '8px 4px 20px',
+            width: '100%',
+          }}
+        >
           {featuredProducts.map(product => (
-            <div className="col-sm-6 col-lg-3" key={product.id}>
+            <div
+              key={product.id}
+              style={{
+                flex: '0 0 280px',
+                minWidth: '280px',
+              }}
+            >
               <Link to={`/product/${product.id}`} className="text-decoration-none text-dark">
                 <ProductCard product={{
                   id: product.id,
@@ -56,6 +131,16 @@ const Dashboard = () => {
             </div>
           ))}
         </div>
+
+        <style>{`
+          .featured-products-slider::-webkit-scrollbar {
+            display: none;
+          }
+          .featured-products-slider {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+        `}</style>
       </section>
 
       {/* Why Shop With Us Banner */}

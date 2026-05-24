@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
+import Footer from '../components/Footer';
 import { productApi } from '../api/productApi';
 import { schoolApi } from '../api/schoolApi';
 
@@ -11,6 +12,7 @@ const Catalog = () => {
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
+  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     search: '',
     schoolId: searchParams.get('schoolId') || '',
@@ -32,6 +34,7 @@ const Catalog = () => {
 
   useEffect(() => {
     const loadProducts = async () => {
+      setLoading(true);
       try {
         const params = { page, size: 12 };
         if (filters.search) params.search = filters.search;
@@ -45,6 +48,8 @@ const Catalog = () => {
         setTotalItems(response.data.totalItems);
       } catch (err) {
         console.error("Failed to load products", err);
+      } finally {
+        setLoading(false);
       }
     };
     loadProducts();
@@ -59,7 +64,8 @@ const Catalog = () => {
   };
 
   return (
-    <div className="container py-5 fade-in">
+    <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
+      <div className="container py-5 fade-in flex-grow-1">
       <div className="mb-5 pb-3 border-bottom">
         <h1 className="fw-bold fs-3 mb-2">All Uniforms</h1>
         <p className="text-muted">Browse our complete collection of school apparel and accessories.</p>
@@ -141,7 +147,19 @@ const Catalog = () => {
           </div>
           
           <div className="row g-4 mb-5">
-            {products.length > 0 ? (
+            {loading ? (
+              // Skeleton Loading State
+              Array.from({ length: 6 }).map((_, index) => (
+                <div className="col-sm-6 col-lg-4" key={`skeleton-${index}`}>
+                  <div className="skeleton-card">
+                    <div className="skeleton skeleton-img"></div>
+                    <div className="skeleton skeleton-text"></div>
+                    <div className="skeleton skeleton-text short"></div>
+                  </div>
+                </div>
+              ))
+            ) : products.length > 0 ? (
+              // Actual Products
               products.map((product) => (
                 <div className="col-sm-6 col-lg-4" key={product.id}>
                   <Link to={`/product/${product.id}`} className="text-decoration-none text-dark">
@@ -157,6 +175,7 @@ const Catalog = () => {
                 </div>
               ))
             ) : (
+              // No Products Found
               <div className="col-12 text-center py-5">
                 <p className="text-muted">No products found matching your filters.</p>
               </div>
@@ -187,6 +206,8 @@ const Catalog = () => {
           )}
         </div>
       </div>
+      </div>
+      <Footer />
     </div>
   );
 };

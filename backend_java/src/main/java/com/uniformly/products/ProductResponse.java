@@ -14,7 +14,8 @@ public record ProductResponse(
         String category,
         String imageUrl,
         List<String> images,
-        List<VariantView> variants
+        List<VariantView> variants,
+        Boolean featured
 ) {
     public static ProductResponse from(Product product) {
         return new ProductResponse(
@@ -28,7 +29,8 @@ public record ProductResponse(
                 product.getCategory().getName(),
                 product.getImageUrl(),
                 product.getImageUrl() != null ? List.of(product.getImageUrl()) : java.util.Collections.emptyList(),
-                product.getVariants().stream().map(VariantView::from).toList()
+                product.getVariants().stream().map(VariantView::from).toList(),
+                product.isFeatured()
         );
     }
 

@@ -2,6 +2,7 @@ package com.uniformly.users;
 
 import com.uniformly.common.BaseEntity;
 import jakarta.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -29,6 +30,16 @@ public class User extends BaseEntity {
 
     @Column(name = "google_sub", unique = true)
     private String googleSub;
+
+    @Column(name = "customer_id", nullable = false, unique = true)
+    private UUID customerId;
+
+    @PrePersist
+    protected void onCreate() {
+        if (customerId == null) {
+            customerId = UUID.randomUUID();
+        }
+    }
 
     protected User() {
     }
@@ -108,5 +119,13 @@ public class User extends BaseEntity {
 
     public void setGoogleSub(String googleSub) {
         this.googleSub = googleSub;
+    }
+
+    public UUID getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(UUID customerId) {
+        this.customerId = customerId;
     }
 }

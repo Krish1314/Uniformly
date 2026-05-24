@@ -42,11 +42,17 @@ public class AdminProductService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<AdminProductResponse> getProducts(String search) {
+    public List<AdminProductResponse> getProducts(String search, Long schoolId) {
         List<Product> products = productRepository.findAll()
                 .stream()
                 .filter(Product::isActive)
                 .toList();
+
+        if (schoolId != null) {
+            products = products.stream()
+                    .filter(p -> p.getSchool() != null && p.getSchool().getId().equals(schoolId))
+                    .toList();
+        }
 
         if (search != null && !search.isBlank()) {
             final String searchLower = search.toLowerCase();
@@ -119,6 +125,7 @@ public class AdminProductService {
     }
 
     @org.springframework.cache.annotation.CacheEvict(value = {"products_v2", "featuredProducts", "productDetails"}, allEntries = true)
+    @Transactional
     public AdminProductResponse updateProduct(Long id, AdminProductRequest request) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Product not found"));
@@ -141,6 +148,39 @@ public class AdminProductService {
         if (request.compareAtPrice() != null) product.setCompareAtPrice(request.compareAtPrice());
         if (request.imageUrl() != null) product.setImageUrl(request.imageUrl());
         if (request.featured() != null) product.setFeatured(request.featured());
+
+        // Dynamic size variant propagation
+        if (request.sizes() != null && !request.sizes().isEmpty()) {
+            List<String> colors = product.getVariants().stream()
+                    .map(ProductVariant::getColor)
+                    .distinct()
+                    .toList();
+            if (colors.isEmpty()) {
+                colors = List.of("Default");
+            }
+
+            for (String sizeStr : request.sizes()) {
+                final String size = sizeStr.trim();
+                if (size.isEmpty()) continue;
+
+                boolean sizeExists = product.getVariants().stream()
+                        .anyMatch(v -> v.getSize().equalsIgnoreCase(size));
+
+                if (!sizeExists) {
+                    for (String color : colors) {
+                        ProductVariant variant = new ProductVariant(
+                                product,
+                                size,
+                                color,
+                                buildSku(product.getId(), product.getName() != null ? product.getName() : "PRODUCT", size, color),
+                                request.stockQuantity() != null ? request.stockQuantity() : 10
+                        );
+                        variantRepository.save(variant);
+                        product.getVariants().add(variant);
+                    }
+                }
+            }
+        }
 
         return toResponse(productRepository.save(product));
     }

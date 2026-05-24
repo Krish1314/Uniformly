@@ -18,9 +18,10 @@ public class AdminProductController {
 
     @GetMapping
     public List<AdminProductResponse> getProducts(
-            @RequestParam(required = false) String search
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) Long schoolId
     ) {
-        return adminProductService.getProducts(search);
+        return adminProductService.getProducts(search, schoolId);
     }
 
     @PostMapping

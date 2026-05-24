@@ -84,6 +84,7 @@ public class AdminOrderService {
                 order.getCreatedAt(),
                 customerName.trim(),
                 order.getUser().getEmail(),
+                order.getUser().getCustomerId() != null ? order.getUser().getCustomerId().toString() : null,
                 order.getPaymentMethod(),
                 order.getPaymentStatus(),
                 order.getSubtotal(),
@@ -94,7 +95,10 @@ public class AdminOrderService {
                 itemDetails,
                 formatAddress(order),
                 order.getAddress() != null ? order.getAddress().getPhone() : "",
-                order.getOrderStatus()
+                order.getOrderStatus(),
+                order.getRazorpayPaymentId(),
+                order.getCancellationReason(),
+                order.getCancelledAt()
         );
     }
 

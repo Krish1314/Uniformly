@@ -18,7 +18,10 @@ public record OrderResponse(
         BigDecimal totalAmount,
         LocalDateTime createdAt,
         AddressView address,
-        List<OrderItemView> items
+        List<OrderItemView> items,
+        boolean canCancel,
+        String cancellationReason,
+        LocalDateTime cancelledAt
 ) {
     public static OrderResponse from(Order order) {
         return new OrderResponse(
@@ -33,7 +36,10 @@ public record OrderResponse(
                 order.getTotalAmount(),
                 order.getCreatedAt(),
                 AddressView.from(order.getAddress()),
-                order.getItems().stream().map(OrderItemView::from).toList()
+                order.getItems().stream().map(OrderItemView::from).toList(),
+                OrderCancellationService.isCancellable(order.getOrderStatus()),
+                order.getCancellationReason(),
+                order.getCancelledAt()
         );
     }
 

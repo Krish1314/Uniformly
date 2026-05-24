@@ -15,11 +15,14 @@ public class SchoolController {
     }
 
     @GetMapping
-    public List<?> getSchools(@RequestParam(required = false) String search) {
+    public List<SchoolSummary> getSchools(@RequestParam(required = false) String search) {
         if (search == null || search.isBlank()) {
             return schools.findSchoolSummaries();
         }
-        return schools.findByNameContainingIgnoreCaseAndActiveTrueOrderByName(search);
+        String searchLower = search.toLowerCase();
+        return schools.findSchoolSummaries().stream()
+                .filter(s -> s.name().toLowerCase().contains(searchLower))
+                .toList();
     }
 
     @GetMapping("/{id}")

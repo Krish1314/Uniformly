@@ -47,7 +47,7 @@ public class ProductController {
     @GetMapping("/featured")
     @org.springframework.cache.annotation.Cacheable("featuredProducts")
     public List<ProductResponse> getFeaturedProducts() {
-        return products.findTop8ByFeaturedTrueAndActiveTrueOrderByCreatedAtDesc()
+        return products.findByFeaturedTrueAndActiveTrueOrderByCreatedAtDesc()
                 .stream()
                 .map(ProductResponse::from)
                 .toList();

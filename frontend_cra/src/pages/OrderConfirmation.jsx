@@ -30,6 +30,7 @@ const OrderConfirmation = () => {
   const [searchParams] = useSearchParams();
   const navigate       = useNavigate();
   const { user }       = useAuth();
+  const [downloading, setDownloading] = useState(false);
 
   const orderId     = searchParams.get('orderId');
   const orderNumber = searchParams.get('orderNumber');
@@ -41,6 +42,28 @@ const OrderConfirmation = () => {
 
   const isFailed  = status === 'failed';
   const isSuccess = status === 'success';
+
+  const handleDownloadInvoice = async () => {
+    if (!order) return;
+    setDownloading(true);
+    try {
+      const response = await api.get(`/orders/${order.id}/invoice`, { responseType: 'blob' });
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `invoice-${order.orderNumber}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Failed to download invoice', err);
+      alert('Could not download invoice. Please try again later.');
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   useEffect(() => {
     if (!orderId) { setLoading(false); return; }
@@ -208,6 +231,23 @@ const OrderConfirmation = () => {
               </svg>
               Track Your Order
             </Link>
+            {!isFailed && order && (
+              <button
+                onClick={handleDownloadInvoice}
+                disabled={downloading}
+                className="btn btn-outline-dark py-2 px-4 rounded-pill fs-6 d-inline-flex align-items-center justify-content-center gap-2"
+                style={{ fontWeight: 600 }}
+              >
+                {downloading ? (
+                  <>
+                    <span className="spinner-border spinner-border-sm" role="status" style={{ width: '14px', height: '14px', borderWidth: '2px' }} />
+                    Downloading...
+                  </>
+                ) : (
+                  <>📄 Download Invoice</>
+                )}
+              </button>
+            )}
             <Link to="/catalog" className="btn btn-solid py-2 px-5 rounded-pill fs-6">
               Continue Shopping
             </Link>

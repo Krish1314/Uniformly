@@ -28,7 +28,7 @@ public class AdminDashboardService {
         Long totalOrders = orderRepository.count();
         Long pendingOrders = orderRepository.countByOrderStatus("PLACED");
         Long totalProducts = productRepository.countActiveProducts();
-        Long lowStockProducts = productRepository.countLowStockProducts(10);
+        Long lowStockProducts = productRepository.countOutOfStockProducts();
 
         var recentOrders = orderRepository.findTop5ByOrderByCreatedAtDesc()
                 .stream()

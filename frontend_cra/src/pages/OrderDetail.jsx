@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
+import CancelOrderModal from '../components/CancelOrderModal';
 import { orderApi } from '../api/orderApi';
 
 /* ─── Constants ──────────────────────────────────────────────────── */
 const CANCELLABLE = new Set(['PLACED', 'PACKED']);
+
+/** API returns `status`; keep fallback for older clients */
+const getOrderStatus = (order) => order?.status ?? order?.orderStatus ?? '';
 
 const ORDER_STATUS = {
   PLACED:          { label: 'Order Placed',   color: '#374151', bg: '#f3f4f6', icon: '📋' },
@@ -54,95 +58,39 @@ const PaymentPill = ({ status, method }) => {
   return <span style={{ display: 'inline-block', padding: '4px 12px', borderRadius: '999px', fontSize: '0.75rem', fontWeight: 600, background: cfg.bg, color: cfg.color }}>{cfg.label}</span>;
 };
 
-/* ─── Cancel Confirmation Modal ──────────────────────────────────── */
-const CancelModal = ({ order, onClose, onCancelled }) => {
-  const [cancelling, setCancelling] = useState(false);
-  const [result, setResult]         = useState(null);
-  const isPaid = order.paymentStatus === 'PAID';
-
-  const handleConfirm = async () => {
-    setCancelling(true);
-    try {
-      const res = await orderApi.cancelOrder(order.id);
-      setResult(res.data);
-      onCancelled(res.data);
-    } catch (err) {
-      alert(err.response?.data?.message || 'Could not cancel order. Please contact support.');
-      onClose();
-    } finally {
-      setCancelling(false);
-    }
-  };
-
-  return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
-      <div onClick={!result ? onClose : undefined} style={{ position: 'absolute', inset: 0, background: 'rgba(8,8,8,0.55)', backdropFilter: 'blur(4px)' }} />
-      <div style={{
-        position: 'relative', background: '#fff', borderRadius: '20px',
-        maxWidth: '460px', width: '100%', overflow: 'hidden',
-        boxShadow: '0 32px 80px rgba(0,0,0,0.22)',
-        animation: 'slideUp 0.25s cubic-bezier(0.34,1.56,0.64,1) both',
-      }}>
-        <div style={{ height: '5px', background: result ? 'linear-gradient(90deg,#7c3aed,#a78bfa)' : 'linear-gradient(90deg,#dc2626,#f87171)' }} />
-        <div style={{ padding: '32px', textAlign: 'center' }}>
-          {result ? (
-            <>
-              <div style={{ fontSize: '3.5rem', marginBottom: '16px' }}>{result.refundInitiated ? '💸' : '✅'}</div>
-              <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.5rem', fontWeight: 700, marginBottom: '10px' }}>Order Cancelled</h3>
-              <p style={{ color: '#555', fontSize: '0.92rem', lineHeight: 1.6, marginBottom: '20px' }}>{result.message}</p>
-              {result.refundInitiated && (
-                <div style={{ background: '#f5f3ff', border: '1px solid #c4b5fd', borderRadius: '10px', padding: '14px', fontSize: '0.82rem', color: '#5b21b6', marginBottom: '24px', lineHeight: 1.5, textAlign: 'left' }}>
-                  <strong>🔒 Refund Details</strong><br />
-                  Refund of <strong>₹{Number(order.totalAmount).toLocaleString()}</strong> will appear in your original account within <strong>5–7 business days</strong>.
-                </div>
-              )}
-              <button onClick={onClose} style={{ background: '#080808', color: '#fff', border: 'none', borderRadius: '10px', padding: '13px 32px', fontSize: '0.95rem', fontWeight: 600, cursor: 'pointer', width: '100%' }}>Done</button>
-            </>
-          ) : (
-            <>
-              <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '68px', height: '68px', borderRadius: '50%', background: 'linear-gradient(135deg,#fee2e2,#fecaca)', marginBottom: '20px', boxShadow: '0 6px 20px rgba(220,38,38,0.15)' }}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#dc2626" viewBox="0 0 16 16">
-                  <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                </svg>
-              </div>
-              <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.5rem', fontWeight: 700, marginBottom: '8px' }}>Cancel this order?</h3>
-              <div style={{ background: '#f9fafb', borderRadius: '10px', padding: '12px 16px', margin: '12px 0 16px', fontSize: '0.85rem', color: '#374151', textAlign: 'left' }}>
-                <div style={{ fontWeight: 600, marginBottom: '4px' }}>{order.orderNumber}</div>
-                <div style={{ color: '#6b7280' }}>₹{Number(order.totalAmount).toLocaleString()} · {order.items?.length} item(s)</div>
-              </div>
-              {isPaid ? (
-                <div style={{ background: '#f5f3ff', border: '1px solid #c4b5fd', borderRadius: '10px', padding: '12px 14px', fontSize: '0.82rem', color: '#5b21b6', marginBottom: '22px', lineHeight: 1.5, textAlign: 'left' }}>
-                  💸 <strong>Prepaid order</strong> — ₹{Number(order.totalAmount).toLocaleString()} will be refunded to your original account in <strong>5–7 business days</strong>.
-                </div>
-              ) : (
-                <p style={{ color: '#6b7280', fontSize: '0.85rem', marginBottom: '22px' }}>Cash on Delivery order — no payment will be processed.</p>
-              )}
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <button onClick={onClose} style={{ flex: 1, padding: '12px', border: '1.5px solid #d1d5db', borderRadius: '10px', background: '#fff', fontWeight: 600, cursor: 'pointer', fontSize: '0.92rem' }}>Keep Order</button>
-                <button onClick={handleConfirm} disabled={cancelling} style={{ flex: 1, padding: '12px', border: 'none', borderRadius: '10px', background: '#dc2626', color: '#fff', fontWeight: 700, cursor: cancelling ? 'not-allowed' : 'pointer', fontSize: '0.92rem', opacity: cancelling ? 0.7 : 1 }}>
-                  {cancelling ? 'Cancelling…' : 'Yes, Cancel'}
-                </button>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-      <style>{`@keyframes slideUp { from { opacity:0; transform:translateY(30px) scale(0.97); } to { opacity:1; transform:translateY(0) scale(1); } }`}</style>
-    </div>
-  );
-};
-
 /* ═══════════════════════════════════════════════════════════════════
    MAIN PAGE
    ═══════════════════════════════════════════════════════════════════ */
 const OrderDetail = () => {
   const { id }     = useParams();
   const navigate   = useNavigate();
+  const [downloading, setDownloading] = useState(false);
 
   const [order,       setOrder]       = useState(null);
   const [tracking,    setTracking]    = useState(null);
   const [loading,     setLoading]     = useState(true);
   const [showCancel,  setShowCancel]  = useState(false);
+
+  const handleDownloadInvoice = async () => {
+    setDownloading(true);
+    try {
+      const response = await orderApi.downloadInvoice(order.id);
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `invoice-${order.orderNumber}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Failed to download invoice', err);
+      alert('Could not download invoice. Please try again later.');
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   const loadOrder = () => {
     Promise.all([
@@ -179,11 +127,12 @@ const OrderDetail = () => {
 
   if (!order) return null;
 
-  const canCancel     = CANCELLABLE.has(order.orderStatus);
-  const isCancelled   = order.orderStatus === 'CANCELLED';
-  const isDelivered   = order.orderStatus === 'DELIVERED';
-  const isShipped     = order.orderStatus === 'SHIPPED';
-  const isFailed      = order.orderStatus === 'PAYMENT_FAILED' || order.paymentStatus === 'FAILED';
+  const status        = getOrderStatus(order);
+  const canCancel     = order.canCancel ?? CANCELLABLE.has(status);
+  const isCancelled   = status === 'CANCELLED';
+  const isDelivered   = status === 'DELIVERED';
+  const isShipped     = status === 'SHIPPED';
+  const isFailed      = status === 'PAYMENT_FAILED' || order.paymentStatus === 'FAILED';
 
   const timelineSteps = isFailed
     ? [
@@ -235,23 +184,32 @@ const OrderDetail = () => {
                 </div>
               </div>
               <div className="d-flex flex-column align-items-end gap-2">
-                <StatusPill status={isFailed ? 'PAYMENT_FAILED' : order.orderStatus} />
+                <StatusPill status={isFailed ? 'PAYMENT_FAILED' : status} />
                 <PaymentPill status={order.paymentStatus} method={order.paymentMethod} />
               </div>
             </div>
 
             {/* ── Action bar ── */}
             <div className="d-flex gap-2 flex-wrap pt-2 border-top" style={{ borderColor: '#f3f4f6' }}>
-              {canCancel && (
+              {!isFailed && (
                 <button
-                  onClick={() => setShowCancel(true)}
+                  onClick={handleDownloadInvoice}
+                  disabled={downloading}
                   style={{
-                    background: '#fef2f2', color: '#dc2626', border: '1.5px solid #fca5a5',
+                    background: '#f3f4f6', color: '#1f2937', border: '1.5px solid #d1d5db',
                     borderRadius: '8px', padding: '8px 18px', fontSize: '0.85rem',
-                    fontWeight: 600, cursor: 'pointer',
+                    fontWeight: 600, cursor: downloading ? 'not-allowed' : 'pointer',
+                    display: 'inline-flex', alignItems: 'center', gap: '6px'
                   }}
                 >
-                  ✕ Cancel Order
+                  {downloading ? (
+                    <>
+                      <span className="spinner-border spinner-border-sm" role="status" style={{ width: '12px', height: '12px', borderWidth: '1.5px' }} />
+                      Downloading...
+                    </>
+                  ) : (
+                    <>📄 Download Invoice</>
+                  )}
                 </button>
               )}
               {(isShipped || isDelivered) && (
@@ -259,27 +217,26 @@ const OrderDetail = () => {
                   🚚 {isShipped ? 'Cannot cancel — order is on its way' : 'Order delivered'}
                 </span>
               )}
-              {isCancelled && (
-                <Link to="/checkout" style={{
-                  background: '#f9fafb', color: '#374151', border: '1.5px solid #d1d5db',
-                  borderRadius: '8px', padding: '8px 18px', fontSize: '0.85rem',
-                  fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px',
-                }}>
-                  🔄 Place New Order
-                </Link>
-              )}
-              {isFailed && (
-                <Link to="/checkout" style={{
-                  background: '#080808', color: '#fff', border: 'none',
-                  borderRadius: '8px', padding: '8px 18px', fontSize: '0.85rem',
-                  fontWeight: 600, textDecoration: 'none',
-                }}>
-                  🔄 Retry Payment
-                </Link>
-              )}
+
+
             </div>
           </div>
         </div>
+
+        {/* ── Cancelled notice ── */}
+        {isCancelled && order.cancellationReason && (
+          <div style={{
+            background: '#fef2f2', border: '1.5px solid #fecaca', borderRadius: '14px',
+            padding: '16px 20px', marginBottom: '24px', fontSize: '0.88rem', color: '#991b1b',
+          }}>
+            <strong>Cancelled</strong> — {order.cancellationReason}
+            {order.cancelledAt && (
+              <span style={{ color: '#b91c1c', marginLeft: '8px' }}>
+                ({new Date(order.cancelledAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })})
+              </span>
+            )}
+          </div>
+        )}
 
         {/* ── Refund notice banner ── */}
         {order.paymentStatus === 'REFUND_INITIATED' && (
@@ -307,7 +264,7 @@ const OrderDetail = () => {
             <div style={{ flex: 1 }}>
               <div style={{ fontWeight: 700, color: '#dc2626', marginBottom: '2px' }}>Payment Failed</div>
               <div style={{ fontSize: '0.85rem', color: '#b91c1c', lineHeight: 1.5 }}>
-                Your online transaction was not completed successfully, so this order has not been placed. No funds have been debited from your account. Please click <strong>Retry Payment</strong> above to complete your order securely.
+                Your online transaction was not completed successfully, so this order has not been placed. No funds have been debited from your account.
               </div>
             </div>
           </div>
@@ -485,28 +442,67 @@ const OrderDetail = () => {
           ))}
         </div>
 
-        {/* ── Need help ── */}
-        <div style={{ marginTop: '24px', padding: '20px', borderRadius: '14px', background: '#f9fafb', border: '1px solid #e5e7eb', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-          <div>
-            <div style={{ fontWeight: 600, marginBottom: '2px' }}>Need help or want to cancel?</div>
-            <div style={{ fontSize: '0.82rem', color: '#6b7280' }}>You can cancel this order or contact support with order number <strong>{order.orderNumber}</strong></div>
+        {/* ── Actions footer ── */}
+        <div style={{
+          marginTop: '24px',
+          padding: '20px',
+          borderRadius: '14px',
+          background: '#fff',
+          border: '1px solid #e5e7eb',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '12px',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
+        }}>
+          <div style={{ fontSize: '0.88rem', color: '#6b7280' }}>
+            {isCancelled && (
+              <span style={{ color: '#b91c1c', fontWeight: 600 }}>This order has been cancelled.</span>
+            )}
+            {canCancel && (
+              <span>You can cancel this order before it is shipped.</span>
+            )}
+            {(isShipped || isDelivered) && !isCancelled && (
+              <span>This order can no longer be cancelled.</span>
+            )}
+            {isFailed && (
+              <span>Payment failed — this order was not placed.</span>
+            )}
           </div>
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
             {canCancel && (
               <button
+                type="button"
                 onClick={() => setShowCancel(true)}
                 style={{
-                  background: '#dc2626', color: '#fff', border: 'none',
-                  borderRadius: '8px', padding: '9px 20px', fontWeight: 700,
-                  fontSize: '0.85rem', cursor: 'pointer', transition: 'background 0.15s',
+                  background: '#dc2626',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '10px 22px',
+                  fontWeight: 700,
+                  fontSize: '0.9rem',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
                 }}
-                onMouseEnter={e => e.currentTarget.style.background = '#b91c1c'}
-                onMouseLeave={e => e.currentTarget.style.background = '#dc2626'}
               >
-                ✕ Cancel Order
+                Cancel Order
               </button>
             )}
-            <Link to="/orders" style={{ background: '#080808', color: '#fff', borderRadius: '8px', padding: '9px 20px', fontWeight: 600, fontSize: '0.85rem', textDecoration: 'none' }}>
+            <Link
+              to="/orders"
+              style={{
+                background: '#080808',
+                color: '#fff',
+                borderRadius: '8px',
+                padding: '10px 22px',
+                fontWeight: 600,
+                fontSize: '0.9rem',
+                textDecoration: 'none',
+                whiteSpace: 'nowrap',
+              }}
+            >
               ← All Orders
             </Link>
           </div>
@@ -517,7 +513,7 @@ const OrderDetail = () => {
 
       {/* Cancel Modal */}
       {showCancel && (
-        <CancelModal
+        <CancelOrderModal
           order={order}
           onClose={() => setShowCancel(false)}
           onCancelled={handleCancelled}

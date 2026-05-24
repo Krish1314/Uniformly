@@ -1,3 +1,8 @@
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
 .admin-shell {
   min-height: 100vh;
   display: flex;
@@ -103,7 +108,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
   margin-bottom: 26px;
+}
+
+.admin-header:has(+ .admin-toolbar) {
+  margin-bottom: 0;
 }
 
 .admin-header h1 {
@@ -111,11 +121,31 @@
   font-size: 34px;
   font-family: Georgia, serif;
   font-weight: 800;
+  flex-shrink: 0;
+}
+
+.admin-header-actions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.admin-toolbar {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 18px;
+  margin-bottom: 22px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  -webkit-overflow-scrolling: touch;
 }
 
 .admin-actions {
   display: flex;
-  gap: 14px;
+  flex-wrap: wrap;
+  gap: 10px;
   align-items: center;
 }
 
@@ -148,10 +178,63 @@
   background: #101827;
   color: white;
   height: 40px;
-  padding: 0 22px;
+  min-height: 40px;
+  padding: 0 20px;
   border-radius: 6px;
   font-weight: 700;
+  font-size: 0.875rem;
+  line-height: 1;
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   cursor: pointer;
+  box-sizing: border-box;
+}
+
+.admin-toolbar .admin-search {
+  width: 200px;
+  flex: 0 0 200px;
+  min-width: 160px;
+}
+
+.admin-toolbar .admin-select {
+  width: auto;
+  min-width: 118px;
+  max-width: 150px;
+  flex: 0 0 auto;
+  padding: 0 10px;
+  font-size: 0.8125rem;
+}
+
+.admin-reset-btn {
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 7px;
+  border: 1px solid #d8dee8;
+  background: #fff;
+  color: #374151;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  line-height: 1;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  box-sizing: border-box;
+}
+
+.admin-reset-btn:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #9ca3af;
+  color: #111827;
+}
+
+.admin-reset-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .admin-alert {
@@ -274,17 +357,6 @@
   border-radius: 5px 5px 0 0;
 }
 
-.tooltip-card {
-  position: absolute;
-  left: calc(78% + 60px);
-  top: 150px;
-  background: white;
-  border: 1px solid #d7dce5;
-  padding: 14px;
-  font-weight: 600;
-  color: #374151;
-}
-
 .chart-dates {
   position: absolute;
   left: 70px;
@@ -298,7 +370,7 @@
 
 .status-row {
   display: grid;
-  grid-template-columns: 90px 1fr 20px;
+  grid-template-columns: 130px 1fr 20px;
   gap: 18px;
   align-items: center;
   margin-bottom: 22px;
@@ -348,7 +420,7 @@
 }
 
 .table-card {
-  overflow: hidden;
+  overflow: visible;
 }
 
 .admin-table {
@@ -402,6 +474,26 @@
 .order-pill.shipped {
   background: #ffedd5;
   color: #c2410c;
+}
+
+.order-pill.cancelled {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.order-pill.payment_failed {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.order-pill.packed {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.order-pill.delivered {
+  background: #dcfce7;
+  color: #15803d;
 }
 
 .product-cell {
@@ -532,4 +624,59 @@
 .modal-actions .admin-primary-btn {
   border: 0;
   background: #101827;
+}
+
+/* SSE Toast Notifications */
+.admin-toast-container {
+  position: fixed;
+  top: 80px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-toast {
+  background: white;
+  border-left: 4px solid #101827;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 16px 24px;
+  border-radius: 6px;
+  min-width: 300px;
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+.admin-toast.hiding {
+  animation: fadeOut 0.3s ease-in forwards;
+}
+
+.admin-toast-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: #101827;
+  margin-bottom: 4px;
+}
+
+.admin-toast-body {
+  font-size: 13px;
+  color: #4b5563;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
 }

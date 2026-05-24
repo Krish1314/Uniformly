@@ -27,6 +27,7 @@ import AdminDashboard from './admin/AdminDashboard';
 import AdminOrders from './admin/AdminOrders';
 import AdminProducts from './admin/AdminProducts';
 import AdminSizeGuides from './admin/AdminSizeGuides';
+import AdminSchools from './admin/AdminSchools';
 
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
@@ -58,6 +59,7 @@ function App() {
             <Route path="/admin/orders" element={<AdminRoute><AdminOrders /></AdminRoute>} />
             <Route path="/admin/products" element={<AdminRoute><AdminProducts /></AdminRoute>} />
             <Route path="/admin/size-guides" element={<AdminRoute><AdminSizeGuides /></AdminRoute>} />
+            <Route path="/admin/schools" element={<AdminRoute><AdminSchools /></AdminRoute>} />
 
             {/* Catch all route */}
             <Route path="*" element={<Navigate to="/" replace />} />

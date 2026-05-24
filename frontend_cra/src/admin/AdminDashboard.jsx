@@ -36,7 +36,7 @@ const AdminDashboard = () => {
     <AdminLayout title="Dashboard">
       {data?.lowStockProducts > 0 && (
         <div className="admin-alert">
-          ⚠️ <strong>{data.lowStockProducts} products</strong> are low on stock and need attention.
+          ⚠️ <strong>{data.lowStockProducts} product{data.lowStockProducts !== 1 ? 's' : ''}</strong> {data.lowStockProducts !== 1 ? 'are' : 'is'} out of stock and need attention.
           <a href="/admin/products" style={{ color: "inherit", marginLeft: "10px", fontWeight: "bold" }}>View Inventory ↗</a>
         </div>
       )}
@@ -71,15 +71,15 @@ const AdminDashboard = () => {
         <section className="admin-card sales-card">
           <h3>Sales Overview (Last 14 Days)</h3>
 
-          <div className="chart" style={{ height: "250px", position: "relative", marginTop: "30px", borderBottom: "1px solid #e5e7eb" }}>
+          <div className="chart" style={{ height: "250px", position: "relative", marginTop: "30px", borderBottom: "1px solid #e5e7eb", marginLeft: "45px" }}>
             <div className="chart-line" style={{ position: "absolute", left: 0, right: 0, borderTop: "1px dashed #e5e7eb", bottom: "100%" }}>
-              <span style={{ fontSize: "11px", color: "#6b7280", position: "absolute", left: "-60px", top: "-8px" }}>₹{Math.round(maxSales)}</span>
+              <span style={{ fontSize: "11px", color: "#6b7280", position: "absolute", left: "-45px", top: "-8px" }}>₹{Math.round(maxSales)}</span>
             </div>
             <div className="chart-line" style={{ position: "absolute", left: 0, right: 0, borderTop: "1px dashed #e5e7eb", bottom: "50%" }}>
-              <span style={{ fontSize: "11px", color: "#6b7280", position: "absolute", left: "-60px", top: "-8px" }}>₹{Math.round(maxSales * 0.5)}</span>
+              <span style={{ fontSize: "11px", color: "#6b7280", position: "absolute", left: "-45px", top: "-8px" }}>₹{Math.round(maxSales * 0.5)}</span>
             </div>
             <div className="chart-line" style={{ position: "absolute", left: 0, right: 0, borderTop: "1px dashed #e5e7eb", bottom: "0%" }}>
-              <span style={{ fontSize: "11px", color: "#6b7280", position: "absolute", left: "-60px", top: "-8px" }}>₹0</span>
+              <span style={{ fontSize: "11px", color: "#6b7280", position: "absolute", left: "-45px", top: "-8px" }}>₹0</span>
             </div>
 
             <div style={{ display: "flex", alignItems: "flex-end", height: "100%", justifyContent: "space-between", paddingLeft: "10px", paddingRight: "10px" }}>
@@ -93,9 +93,11 @@ const AdminDashboard = () => {
                     onMouseLeave={() => setHoveredBar(null)}
                   >
                     {hoveredBar === index && (
-                      <div className="tooltip-card" style={{ position: "absolute", bottom: `${heightPercent + 5}%`, left: "50%", transform: "translateX(-50%)", background: "#1e293b", color: "white", padding: "8px 12px", borderRadius: "6px", fontSize: "12px", whiteSpace: "nowrap", zIndex: 10, boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)" }}>
+                      <div style={{ position: "absolute", bottom: `${heightPercent + 5}%`, left: "50%", transform: "translateX(-50%)", background: "#1e293b", color: "white", padding: "8px 12px", borderRadius: "6px", fontSize: "12px", whiteSpace: "nowrap", zIndex: 10, boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)", textAlign: "center" }}>
                         <strong>{date}</strong><br />
                         ₹{sales.toLocaleString()}
+                        {/* Downward triangle arrow */}
+                        <div style={{ position: "absolute", top: "100%", left: "50%", transform: "translateX(-50%)", width: 0, height: 0, borderLeft: "6px solid transparent", borderRight: "6px solid transparent", borderTop: "6px solid #1e293b" }} />
                       </div>
                     )}
                     <div
@@ -156,7 +158,7 @@ const AdminDashboard = () => {
                   <strong>{order.orderNumber}</strong>
                   <p>{order.customerName}</p>
                 </div>
-                <div>
+                <div style={{ textAlign: "right" }}>
                   <strong>₹{order.totalAmount?.toLocaleString()}</strong>
                   <p>{order.status}</p>
                 </div>

@@ -17,6 +17,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findTop8ByFeaturedTrueAndActiveTrueOrderByCreatedAtDesc();
 
     @EntityGraph(attributePaths = {"school", "category", "variants"})
+    List<Product> findByFeaturedTrueAndActiveTrueOrderByCreatedAtDesc();
+
+    @EntityGraph(attributePaths = {"school", "category", "variants"})
     List<Product> findTop4BySchoolIdAndActiveTrueAndIdNot(Long schoolId, Long id);
 
     @EntityGraph(attributePaths = {"school", "category", "variants"})
@@ -46,9 +49,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         from Product p
         join p.variants v
         where p.active = true
-        and v.stockQuantity < :threshold
+        and v.stockQuantity <= 0
     """)
-    Long countLowStockProducts(@Param("threshold") int threshold);
+    Long countOutOfStockProducts();
 
     @Query("""
         select distinct p from Product p

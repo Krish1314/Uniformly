@@ -9,6 +9,20 @@ public class SecurityUtils {
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new IllegalStateException("User is not authenticated");
         }
-        return (Long) authentication.getPrincipal();
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof Long) {
+            return (Long) principal;
+        }
+        if (principal instanceof Number) {
+            return ((Number) principal).longValue();
+        }
+        if (principal instanceof String) {
+            try {
+                return Long.parseLong((String) principal);
+            } catch (NumberFormatException e) {
+                // Not a valid numeric user ID string (e.g. "anonymousUser" or "user")
+            }
+        }
+        throw new IllegalStateException("User is not authenticated with a valid user ID");
     }
 }

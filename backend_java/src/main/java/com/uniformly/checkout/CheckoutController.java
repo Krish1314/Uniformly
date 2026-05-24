@@ -4,6 +4,7 @@ import com.uniformly.addresses.Address;
 import com.uniformly.addresses.AddressRepository;
 import com.uniformly.cart.CartItem;
 import com.uniformly.cart.CartItemRepository;
+import com.uniformly.admin.AdminSseService;
 import com.uniformly.common.NotFoundException;
 import com.uniformly.orders.*;
 import com.uniformly.payment.RazorpayService;
@@ -33,6 +34,7 @@ public class CheckoutController {
     private final OrderStatusHistoryRepository statusHistory;
     private final ProductVariantRepository variantRepository;
     private final RazorpayService razorpayService;
+    private final AdminSseService adminSseService;
     private final SecureRandom random = new SecureRandom();
 
     public CheckoutController(
@@ -43,7 +45,8 @@ public class CheckoutController {
             PaymentRepository payments,
             OrderStatusHistoryRepository statusHistory,
             ProductVariantRepository variantRepository,
-            RazorpayService razorpayService
+            RazorpayService razorpayService,
+            AdminSseService adminSseService
     ) {
         this.users = users;
         this.addresses = addresses;
@@ -53,6 +56,7 @@ public class CheckoutController {
         this.statusHistory = statusHistory;
         this.variantRepository = variantRepository;
         this.razorpayService = razorpayService;
+        this.adminSseService = adminSseService;
     }
 
     /**
@@ -110,6 +114,7 @@ public class CheckoutController {
             decrementStock(items);
             cartItems.deleteByUserId(userId);
             payments.save(new Payment(saved, "COD", total, "PENDING"));
+            adminSseService.notifyNewOrder(saved); // Real-time notification
             return new CheckoutInitResponse(saved.getId(), saved.getOrderNumber(), null, null, true);
         } else {
             // Online payment: create a Razorpay order; do NOT decrement stock yet
@@ -157,10 +162,15 @@ public class CheckoutController {
             throw new IllegalArgumentException("Payment signature verification failed. Do not proceed.");
         }
 
-        // ── Mark PAID ──
+        // ── Mark PAID and PLACED ──
         order.setPaymentStatus("PAID");
+        if ("PAYMENT_FAILED".equals(order.getOrderStatus()) || "PENDING".equals(order.getOrderStatus())) {
+            order.setOrderStatus("PLACED");
+        }
         order.setRazorpayPaymentId(request.razorpayPaymentId());
         orders.save(order);
+
+        adminSseService.notifyNewOrder(order); // Real-time notification
 
         // ── Decrement stock now that payment is confirmed ──
         List<CartItem> items = cartItems.findByUserIdOrderByCreatedAtDesc(userId);
